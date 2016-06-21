@@ -1,0 +1,12 @@
+base
+httr
+devtools
+slidify
+ggplot2
+circlize
+RColorBrewer
+wordcloud
+NLP
+tm
+SnowballC
+dplyr
