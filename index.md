@@ -42,28 +42,134 @@ knit        : slidify::knit2slides
 
 --- .intermezzo
 
-# Getting started on a project
+## Getting started on a project
 
-* Setting up the project
+* Setting up
 * Dependency control
 * Making it reproducible
 
 ---
 
-## Setting up the project
+## Setting up a project
+
+* Use RStudio projects instead.
+  * Avoids use of `setwd()`.
+  * Essential for advanced functions of RStudio.
+  * File > New Project...
+  
+  <img src="assets/img/rstudio_project.png" style="display: block; margin-left: auto; margin-right: auto; border-width: 1px; border-colour: #000000;border-style: solid;">
 
 ---
 
-## Dependency control...what?
+## Dependency control
+
+* R is constantly under development
+* Packages are constantly under development too
+* You may use 50 packages from 50 different authors.
+* Therefore it is important to keep records of which package versions you use for each project.
+
+---
+
+## Dependency control
+
+
+```r
+.libPaths()
+```
+
+```
+## [1] "C:/Users/Matt/Documents/R/win-library/3.3"
+## [2] "C:/Program Files/R/R-3.3.1/library"
+```
+
+---
+
+## Dependency control
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.3.1 (2016-06-21)
+## Platform: i386-w64-mingw32/i386 (32-bit)
+## Running under: Windows 7 (build 7601) Service Pack 1
+## 
+## locale:
+## [1] LC_COLLATE=English_United Kingdom.1252 
+## [2] LC_CTYPE=English_United Kingdom.1252   
+## [3] LC_MONETARY=English_United Kingdom.1252
+## [4] LC_NUMERIC=C                           
+## [5] LC_TIME=English_United Kingdom.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] slidify_0.5      magrittr_1.5     formatR_1.4      markdown_0.7.7  
+##  [5] tools_3.3.1      whisker_0.3-2    yaml_2.1.13      codetools_0.2-14
+##  [9] stringi_1.1.1    knitr_1.13       digest_0.6.9     stringr_1.0.0   
+## [13] evaluate_0.9
+```
+
+---
+
+## Dependency control
+
+### The better way
+
+
+```r
+# Install and load the checkpoint library
+
+install.packages("checkpoint")
+library(checkpoint)
+
+# Set a checkpoint for the project
+
+checkpoint("2016-05-22", use.knitr = TRUE)
+
+# Subsequently, you can load this snapshot with:
+
+setSnapshot("2016-05-22")
+```
+
+Watch your disk space! Some packages will need to be installed manually.
+
+---
+
+
+## Reproducibility
+
+* Code is for People (Not Computers).
+* In 3 months time, even you will need comments.
+  * Comment __why__ not how:
+  
+```
+# This is a comment
+```
+* Can you use a reproducible format?
 
 ---
 
 ## Reproducibility
 
-* Where is your data coming from?
-*
+### Markdown
 
----
+* Blends text, tables, figures...everything into a single document
+* This presentation is written using markdown.
+
+> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare dui urna, vel facilisis eros molestie in. Duis finibus eros sem, sodales luctus neque iaculis eget. Nam a fringilla massa. Sed sed dictum sapien.
+>
+>
+>```r
+># Plot for demonstration purposes
+>
+>plot(rnorm(100))
+>```
+>
+>![plot of chunk unnamed-chunk-4](assets/fig/unnamed-chunk-4-1.png)
 
 --- .intermezzo
 
@@ -660,14 +766,19 @@ with(tax.mp, Tax / Income)
 
 ```r
 library(dplyr)
+```
 
+```
+## Error in library(dplyr): there is no package called 'dplyr'
+```
+
+```r
 # filter the fligths on the first day of the year
 filter(tax.mp, Party == 'Con', taxrate > 40)
 ```
 
 ```
-##   sex Party    Name Income    Tax  taxrate
-## 1   M   Con Johnson 612583 276505 45.13756
+## Error in match.arg(method): object 'taxrate' not found
 ```
 
 ```r
@@ -676,12 +787,7 @@ mutate(tax.mp, gain = Income - Tax)
 ```
 
 ```
-##   sex Party     Name Income    Tax  taxrate   gain
-## 1   M   Con  Cameron 200307  75898 37.89084 124409
-## 2   M   Con  Osborne 198738  72210 36.33427 126528
-## 3   M   Lab   Corbyn  70795  18912 26.71375  51883
-## 4   M   Con  Johnson 612583 276505 45.13756 336078
-## 5   F   SNP Sturgeon 104000  31000 29.80769  73000
+## Error in eval(expr, envir, enclos): could not find function "mutate"
 ```
 
 ---
@@ -700,13 +806,7 @@ tax.mp %>%                  # Specify original dataframe
 ```
 
 ```
-## Source: local data frame [3 x 4]
-## 
-##    Party        a      b      c
-##   (fctr)    (dbl)  (dbl)  (dbl)
-## 1    Con 337209.3 198738 276505
-## 2    Lab  70795.0  70795  18912
-## 3    SNP 104000.0 104000  31000
+## Error in function_list[[i]](value): could not find function "group_by"
 ```
 
 --- .intermezzo
@@ -980,7 +1080,7 @@ SELECT Species, median(Sepal.Width) from iris GROUP BY Species
 plot(iris$Petal.Length, iris$Petal.Width, main="Edgar Anderson's Iris Data")
 ```
 
-![plot of chunk unnamed-chunk-39](assets/fig/unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-43](assets/fig/unnamed-chunk-43-1.png)
 
 ---
 
@@ -991,7 +1091,7 @@ plot(iris$Petal.Length, iris$Petal.Width, main="Edgar Anderson's Iris Data")
 plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species, main="Edgar Anderson's Iris Data")
 ```
 
-![plot of chunk unnamed-chunk-40](assets/fig/unnamed-chunk-40-1.png)
+![plot of chunk unnamed-chunk-44](assets/fig/unnamed-chunk-44-1.png)
 
 ---
 
@@ -1002,13 +1102,13 @@ plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species, main="Edgar Anderson
 plot(iris[1:4], col=iris$Species)
 ```
 
-![plot of chunk unnamed-chunk-41](assets/fig/unnamed-chunk-41-1.png)
+![plot of chunk unnamed-chunk-45](assets/fig/unnamed-chunk-45-1.png)
 
 ---
 
 ## Some very simple trend analyses
 
-![plot of chunk unnamed-chunk-42](assets/fig/unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-46](assets/fig/unnamed-chunk-46-1.png)
 
 
 ```r
@@ -1030,7 +1130,7 @@ plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species)
 abline(lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients, col="black")
 ```
 
-![plot of chunk unnamed-chunk-44](assets/fig/unnamed-chunk-44-1.png)
+![plot of chunk unnamed-chunk-48](assets/fig/unnamed-chunk-48-1.png)
 
 ---
 
@@ -1072,7 +1172,7 @@ summary(model)
 boxplot(Sepal.Width ~ Species, iris)
 ```
 
-![plot of chunk unnamed-chunk-46](assets/fig/unnamed-chunk-46-1.png)
+![plot of chunk unnamed-chunk-50](assets/fig/unnamed-chunk-50-1.png)
 
 Looks like the versicolor and virginica flowers' sepal width may be identical. 
 

@@ -93,11 +93,11 @@
 
 <slide class="intermezzo" id="slide-4" style="background:;">
   <hgroup>
-    <h1>Getting started on a project</h1>
+    <h2>Getting started on a project</h2>
   </hgroup>
   <article data-timings="">
     <ul>
-<li>Setting up the project</li>
+<li>Setting up</li>
 <li>Dependency control</li>
 <li>Making it reproducible</li>
 </ul>
@@ -108,46 +108,170 @@
 
 <slide class="" id="slide-5" style="background:;">
   <hgroup>
-    <h2>Setting up the project</h2>
-  </hgroup>
-  <article data-timings="">
-    
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-6" style="background:;">
-  <hgroup>
-    <h2>Dependency control...what?</h2>
-  </hgroup>
-  <article data-timings="">
-    
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-7" style="background:;">
-  <hgroup>
-    <h2>Reproducibility</h2>
+    <h2>Setting up a project</h2>
   </hgroup>
   <article data-timings="">
     <ul>
-<li>Where is your data coming from?
-*</li>
+<li><p>Use RStudio projects instead.</p>
+
+<ul>
+<li>Avoids use of <code>setwd()</code>.</li>
+<li>Essential for advanced functions of RStudio.</li>
+<li>File &gt; New Project...</li>
+</ul>
+
+<p><img src="assets/img/rstudio_project.png" style="display: block; margin-left: auto; margin-right: auto; border-width: 1px; border-colour: #000000;border-style: solid;"></p></li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-8" style="background:;">
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Dependency control</h2>
+  </hgroup>
   <article data-timings="">
-    
+    <ul>
+<li>R is constantly under development</li>
+<li>Packages are constantly under development too</li>
+<li>You may use 50 packages from 50 different authors.</li>
+<li>Therefore it is important to keep records of which package versions you use for each project.</li>
+</ul>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-9" style="background:;">
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Dependency control</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">.libPaths()
+</code></pre>
+
+<pre><code>## [1] &quot;C:/Users/Matt/Documents/R/win-library/3.3&quot;
+## [2] &quot;C:/Program Files/R/R-3.3.1/library&quot;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Dependency control</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">sessionInfo()
+</code></pre>
+
+<pre><code>## R version 3.3.1 (2016-06-21)
+## Platform: i386-w64-mingw32/i386 (32-bit)
+## Running under: Windows 7 (build 7601) Service Pack 1
+## 
+## locale:
+## [1] LC_COLLATE=English_United Kingdom.1252 
+## [2] LC_CTYPE=English_United Kingdom.1252   
+## [3] LC_MONETARY=English_United Kingdom.1252
+## [4] LC_NUMERIC=C                           
+## [5] LC_TIME=English_United Kingdom.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] slidify_0.5      magrittr_1.5     formatR_1.4      markdown_0.7.7  
+##  [5] tools_3.3.1      whisker_0.3-2    yaml_2.1.13      codetools_0.2-14
+##  [9] stringi_1.1.1    knitr_1.13       digest_0.6.9     stringr_1.0.0   
+## [13] evaluate_0.9
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Dependency control</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>The better way</h3>
+
+<pre><code class="r"># Install and load the checkpoint library
+
+install.packages(&quot;checkpoint&quot;)
+library(checkpoint)
+
+# Set a checkpoint for the project
+
+checkpoint(&quot;2016-05-22&quot;, use.knitr = TRUE)
+
+# Subsequently, you can load this snapshot with:
+
+setSnapshot(&quot;2016-05-22&quot;)
+</code></pre>
+
+<p>Watch your disk space! Some packages will need to be installed manually.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Reproducibility</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Code is for People (Not Computers).</li>
+<li>In 3 months time, even you will need comments.
+
+<ul>
+<li>Comment <strong>why</strong> not how:</li>
+</ul></li>
+</ul>
+
+<pre><code># This is a comment
+</code></pre>
+
+<ul>
+<li>Can you use a reproducible format?</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Reproducibility</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Markdown</h3>
+
+<ul>
+<li>Blends text, tables, figures...everything into a single document</li>
+<li>This presentation is written using markdown.</li>
+</ul>
+
+<blockquote>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare dui urna, vel facilisis eros molestie in. Duis finibus eros sem, sodales luctus neque iaculis eget. Nam a fringilla massa. Sed sed dictum sapien.</p>
+
+<pre><code class="r"># Plot for demonstration purposes
+
+plot(rnorm(100))
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"></p>
+</blockquote>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="intermezzo" id="slide-12" style="background:;">
   <hgroup>
     <h2>Walking through a project</h2>
   </hgroup>
@@ -161,14 +285,14 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-10" style="background:;">
+<slide class="" id="slide-13" style="background:;">
   <article data-timings="">
     
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-11" style="background:;">
+<slide class="intermezzo" id="slide-14" style="background:;">
   <hgroup>
     <h2>The R environment</h2>
   </hgroup>
@@ -182,7 +306,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-12" style="background:;">
+<slide class="" id="slide-15" style="background:;">
   <hgroup>
     <h2>Base R console</h2>
   </hgroup>
@@ -193,7 +317,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-13" style="background:;">
+<slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>RStudio</h2>
   </hgroup>
@@ -204,7 +328,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-14" style="background:;">
+<slide class="intermezzo" id="slide-17" style="background:;">
   <hgroup>
     <h2>Working with objects and functions</h2>
   </hgroup>
@@ -220,7 +344,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-15" style="background:;">
+<slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>Assignment</h2>
   </hgroup>
@@ -231,7 +355,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-16" style="background:;">
+<slide class="intermezzo" id="slide-19" style="background:;">
   <hgroup>
     <h2>Loading data and getting libraries</h2>
   </hgroup>
@@ -245,7 +369,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-17" style="background:;">
+<slide class="intermezzo" id="slide-20" style="background:;">
   <hgroup>
     <h2>Rstudio Projects and getting help</h2>
   </hgroup>
@@ -259,7 +383,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-18" style="background:;">
+<slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h3>Base R console</h3>
   </hgroup>
@@ -270,7 +394,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-19" style="background:;">
+<slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h3>RStudio</h3>
   </hgroup>
@@ -281,7 +405,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-20" style="background:;">
+<slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>Installing and using packages</h2>
   </hgroup>
@@ -311,7 +435,7 @@ wordcloud(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-21" style="background:;">
+<slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>Installing and using packages <em>(Cont.)</em></h2>
   </hgroup>
@@ -324,7 +448,7 @@ wordcloud(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-22" style="background:;">
+<slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>Getting help</h2>
   </hgroup>
@@ -348,7 +472,7 @@ wordcloud(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-23" style="background:;">
+<slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>Helping yourself</h2>
   </hgroup>
@@ -365,7 +489,7 @@ wordcloud(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-24" style="background:;">
+<slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Helping yourself</h2>
   </hgroup>
@@ -381,7 +505,7 @@ wordcloud(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-25" style="background:;">
+<slide class="intermezzo" id="slide-28" style="background:;">
   <hgroup>
     <h2>Best practice for using R and Rstudio</h2>
   </hgroup>
@@ -398,7 +522,7 @@ wordcloud(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-26" style="background:;">
+<slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>Some best practices</h2>
   </hgroup>
@@ -429,7 +553,7 @@ annual.income &lt;- 27000
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-27" style="background:;">
+<slide class="" id="slide-30" style="background:;">
   <hgroup>
     <h2>A brief style guide (Cont.)</h2>
   </hgroup>
@@ -452,7 +576,7 @@ plot(x=x,y=y,type=&quot;l&quot;,col=&quot;black&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-28" style="background:;">
+<slide class="" id="slide-31" style="background:;">
   <hgroup>
     <h2>A brief style guide (Cont.)</h2>
   </hgroup>
@@ -499,7 +623,7 @@ a == 1       # we can also test whether object a is still 1
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-29" style="background:;">
+<slide class="" id="slide-32" style="background:;">
   <hgroup>
     <h2>Numbers and strings (scalars)</h2>
   </hgroup>
@@ -524,7 +648,7 @@ f + 1
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-30" style="background:;">
+<slide class="" id="slide-33" style="background:;">
   <hgroup>
     <h2>Vectors</h2>
   </hgroup>
@@ -552,7 +676,7 @@ char.vec[2]
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-31" style="background:;">
+<slide class="" id="slide-34" style="background:;">
   <hgroup>
     <h2>Vectors</h2>
   </hgroup>
@@ -585,7 +709,7 @@ num[filter]
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="quiz" id="slide-32" style="background:;">
+<slide class="quiz" id="slide-35" style="background:;">
   <hgroup>
     <h2>Vector functions</h2>
   </hgroup>
@@ -622,7 +746,7 @@ length(a)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-33" style="background:;">
+<slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Matrices</h2>
   </hgroup>
@@ -657,7 +781,7 @@ foo[ ,c]
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-34" style="background:;">
+<slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Data frames</h2>
   </hgroup>
@@ -685,7 +809,7 @@ str(tax.mp)     # let&#39;s look at the structure
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-35" style="background:;">
+<slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Data frames</h2>
   </hgroup>
@@ -720,7 +844,7 @@ str(tax.mp)     # let&#39;s look at the structure
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-36" style="background:;">
+<slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Accessing column and row names</h2>
   </hgroup>
@@ -753,7 +877,7 @@ str(tax.mp)     # let&#39;s look at the structure
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-37" style="background:;">
+<slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Selecting data from a data.frame</h2>
   </hgroup>
@@ -784,7 +908,7 @@ str(tax.mp)     # let&#39;s look at the structure
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-38" style="background:;">
+<slide class="" id="slide-41" style="background:;">
   <hgroup>
     <h2>Creating new columns</h2>
   </hgroup>
@@ -810,38 +934,36 @@ with(tax.mp, Tax / Income)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-39" style="background:;">
+<slide class="" id="slide-42" style="background:;">
   <hgroup>
     <h2>Data wrangling with dplyr</h2>
   </hgroup>
   <article data-timings="">
     <pre><code class="r">library(dplyr)
+</code></pre>
 
-# filter the fligths on the first day of the year
+<pre><code>## Error in library(dplyr): there is no package called &#39;dplyr&#39;
+</code></pre>
+
+<pre><code class="r"># filter the fligths on the first day of the year
 filter(tax.mp, Party == &#39;Con&#39;, taxrate &gt; 40)
 </code></pre>
 
-<pre><code>##   sex Party    Name Income    Tax  taxrate
-## 1   M   Con Johnson 612583 276505 45.13756
+<pre><code>## Error in match.arg(method): object &#39;taxrate&#39; not found
 </code></pre>
 
 <pre><code class="r"># add columns
 mutate(tax.mp, gain = Income - Tax)
 </code></pre>
 
-<pre><code>##   sex Party     Name Income    Tax  taxrate   gain
-## 1   M   Con  Cameron 200307  75898 37.89084 124409
-## 2   M   Con  Osborne 198738  72210 36.33427 126528
-## 3   M   Lab   Corbyn  70795  18912 26.71375  51883
-## 4   M   Con  Johnson 612583 276505 45.13756 336078
-## 5   F   SNP Sturgeon 104000  31000 29.80769  73000
+<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;mutate&quot;
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-40" style="background:;">
+<slide class="" id="slide-43" style="background:;">
   <hgroup>
     <h2>Piping commands together</h2>
   </hgroup>
@@ -855,20 +977,14 @@ mutate(tax.mp, gain = Income - Tax)
     )
 </code></pre>
 
-<pre><code>## Source: local data frame [3 x 4]
-## 
-##    Party        a      b      c
-##   (fctr)    (dbl)  (dbl)  (dbl)
-## 1    Con 337209.3 198738 276505
-## 2    Lab  70795.0  70795  18912
-## 3    SNP 104000.0 104000  31000
+<pre><code>## Error in function_list[[i]](value): could not find function &quot;group_by&quot;
 </code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-41" style="background:;">
+<slide class="intermezzo" id="slide-44" style="background:;">
   <hgroup>
     <h2>Managing data</h2>
   </hgroup>
@@ -883,7 +999,7 @@ mutate(tax.mp, gain = Income - Tax)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-42" style="background:;">
+<slide class="" id="slide-45" style="background:;">
   <hgroup>
     <h2>The R Workspace</h2>
   </hgroup>
@@ -907,7 +1023,7 @@ read.table(file = &quot;mydata.txt&quot;)         # Reads a text file called &qu
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-43" style="background:;">
+<slide class="" id="slide-46" style="background:;">
   <hgroup>
     <h2>Importing data into R</h2>
   </hgroup>
@@ -938,7 +1054,7 @@ head(titanic, 5) # what does tail(titanic) do?
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-44" style="background:;">
+<slide class="" id="slide-47" style="background:;">
   <hgroup>
     <h2>Writing out data</h2>
   </hgroup>
@@ -966,7 +1082,7 @@ save(titanic, trees, file=&quot;my.Rdata&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-45" style="background:;">
+<slide class="" id="slide-48" style="background:;">
   <hgroup>
     <h2>Other formats you can import into R</h2>
   </hgroup>
@@ -995,7 +1111,7 @@ save(titanic, trees, file=&quot;my.Rdata&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-46" style="background:;">
+<slide class="intermezzo" id="slide-49" style="background:;">
   <hgroup>
     <h2>Getting our hands dirty</h2>
   </hgroup>
@@ -1013,7 +1129,7 @@ save(titanic, trees, file=&quot;my.Rdata&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-47" style="background:;">
+<slide class="" id="slide-50" style="background:;">
   <hgroup>
     <h2>The IRIS data set</h2>
   </hgroup>
@@ -1041,7 +1157,7 @@ save(titanic, trees, file=&quot;my.Rdata&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-48" style="background:;">
+<slide class="" id="slide-51" style="background:;">
   <hgroup>
     <h2>The IRIS data set</h2>
   </hgroup>
@@ -1068,7 +1184,7 @@ save(titanic, trees, file=&quot;my.Rdata&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-49" style="background:;">
+<slide class="" id="slide-52" style="background:;">
   <article data-timings="">
     <pre><code class="r">attributes(iris)
 </code></pre>
@@ -1099,7 +1215,7 @@ save(titanic, trees, file=&quot;my.Rdata&quot;)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-50" style="background:;">
+<slide class="" id="slide-53" style="background:;">
   <article data-timings="">
     <pre><code class="r"># What is the mean petal width?
 mean(iris$Petal.Width)
@@ -1128,7 +1244,7 @@ table(iris$Species)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-51" style="background:;">
+<slide class="" id="slide-54" style="background:;">
   <article data-timings="">
     <pre><code class="r"># what is the average sepal width per specie?
 aggregate(
@@ -1155,7 +1271,7 @@ aggregate(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-52" style="background:;">
+<slide class="" id="slide-55" style="background:;">
   <hgroup>
     <h2>Plotting the IRIS data</h2>
   </hgroup>
@@ -1163,13 +1279,13 @@ aggregate(
     <pre><code class="r">plot(iris$Petal.Length, iris$Petal.Width, main=&quot;Edgar Anderson&#39;s Iris Data&quot;)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-39-1.png" alt="plot of chunk unnamed-chunk-39"></p>
+<p><img src="assets/fig/unnamed-chunk-43-1.png" alt="plot of chunk unnamed-chunk-43"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-53" style="background:;">
+<slide class="" id="slide-56" style="background:;">
   <hgroup>
     <h2>Plotting the IRIS data</h2>
   </hgroup>
@@ -1177,13 +1293,13 @@ aggregate(
     <pre><code class="r">plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species, main=&quot;Edgar Anderson&#39;s Iris Data&quot;)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-40-1.png" alt="plot of chunk unnamed-chunk-40"></p>
+<p><img src="assets/fig/unnamed-chunk-44-1.png" alt="plot of chunk unnamed-chunk-44"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-54" style="background:;">
+<slide class="" id="slide-57" style="background:;">
   <hgroup>
     <h2>Plotting the IRIS data</h2>
   </hgroup>
@@ -1191,18 +1307,18 @@ aggregate(
     <pre><code class="r">plot(iris[1:4], col=iris$Species)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-41-1.png" alt="plot of chunk unnamed-chunk-41"></p>
+<p><img src="assets/fig/unnamed-chunk-45-1.png" alt="plot of chunk unnamed-chunk-45"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-55" style="background:;">
+<slide class="" id="slide-58" style="background:;">
   <hgroup>
     <h2>Some very simple trend analyses</h2>
   </hgroup>
   <article data-timings="">
-    <p><img src="assets/fig/unnamed-chunk-42-1.png" alt="plot of chunk unnamed-chunk-42"></p>
+    <p><img src="assets/fig/unnamed-chunk-46-1.png" alt="plot of chunk unnamed-chunk-46"></p>
 
 <pre><code class="r">lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients
 </code></pre>
@@ -1215,7 +1331,7 @@ aggregate(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-56" style="background:;">
+<slide class="" id="slide-59" style="background:;">
   <hgroup>
     <h2>Some very simple trend analyses</h2>
   </hgroup>
@@ -1224,13 +1340,13 @@ aggregate(
 abline(lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients, col=&quot;black&quot;)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-44-1.png" alt="plot of chunk unnamed-chunk-44"></p>
+<p><img src="assets/fig/unnamed-chunk-48-1.png" alt="plot of chunk unnamed-chunk-48"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-57" style="background:;">
+<slide class="" id="slide-60" style="background:;">
   <hgroup>
     <h2>Usually we use the lm() function..</h2>
   </hgroup>
@@ -1263,7 +1379,7 @@ summary(model)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-58" style="background:;">
+<slide class="" id="slide-61" style="background:;">
   <hgroup>
     <h2>Hypothesis testing</h2>
   </hgroup>
@@ -1271,7 +1387,7 @@ summary(model)
     <pre><code class="r">boxplot(Sepal.Width ~ Species, iris)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-46-1.png" alt="plot of chunk unnamed-chunk-46"></p>
+<p><img src="assets/fig/unnamed-chunk-50-1.png" alt="plot of chunk unnamed-chunk-50"></p>
 
 <p>Looks like the versicolor and virginica flowers&#39; sepal width may be identical. </p>
 
@@ -1279,7 +1395,7 @@ summary(model)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-59" style="background:;">
+<slide class="" id="slide-62" style="background:;">
   <hgroup>
     <h2>Hypothesis testing (t-test)</h2>
   </hgroup>
@@ -1306,7 +1422,7 @@ summary(model)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-60" style="background:;">
+<slide class="" id="slide-63" style="background:;">
   <hgroup>
     <h2>Hypothesis testing (ANOVA)</h2>
   </hgroup>
@@ -1364,338 +1480,356 @@ anova(plant_aov)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Setting up the project'>
+        data-slide=5 title='Setting up a project'>
          5
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Dependency control...what?'>
+        data-slide=6 title='Dependency control'>
          6
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='Reproducibility'>
+        data-slide=7 title='Dependency control'>
          7
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=8 title='NA'>
+        data-slide=8 title='Dependency control'>
          8
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=9 title='Walking through a project'>
+        data-slide=9 title='Dependency control'>
          9
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=10 title='NA'>
+        data-slide=10 title='Reproducibility'>
          10
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=11 title='The R environment'>
+        data-slide=11 title='Reproducibility'>
          11
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=12 title='Base R console'>
+        data-slide=12 title='Walking through a project'>
          12
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=13 title='RStudio'>
+        data-slide=13 title='NA'>
          13
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='Working with objects and functions'>
+        data-slide=14 title='The R environment'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='Assignment'>
+        data-slide=15 title='Base R console'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='Loading data and getting libraries'>
+        data-slide=16 title='RStudio'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='Rstudio Projects and getting help'>
+        data-slide=17 title='Working with objects and functions'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Base R console'>
+        data-slide=18 title='Assignment'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='RStudio'>
+        data-slide=19 title='Loading data and getting libraries'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='Installing and using packages'>
+        data-slide=20 title='Rstudio Projects and getting help'>
          20
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=21 title='Installing and using packages <em>(Cont.)</em>'>
+        data-slide=21 title='Base R console'>
          21
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='Getting help'>
+        data-slide=22 title='RStudio'>
          22
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=23 title='Helping yourself'>
+        data-slide=23 title='Installing and using packages'>
          23
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=24 title='Helping yourself'>
+        data-slide=24 title='Installing and using packages <em>(Cont.)</em>'>
          24
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=25 title='Best practice for using R and Rstudio'>
+        data-slide=25 title='Getting help'>
          25
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=26 title='Some best practices'>
+        data-slide=26 title='Helping yourself'>
          26
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='A brief style guide (Cont.)'>
+        data-slide=27 title='Helping yourself'>
          27
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=28 title='A brief style guide (Cont.)'>
+        data-slide=28 title='Best practice for using R and Rstudio'>
          28
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=29 title='Numbers and strings (scalars)'>
+        data-slide=29 title='Some best practices'>
          29
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=30 title='Vectors'>
+        data-slide=30 title='A brief style guide (Cont.)'>
          30
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=31 title='Vectors'>
+        data-slide=31 title='A brief style guide (Cont.)'>
          31
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=32 title='Vector functions'>
+        data-slide=32 title='Numbers and strings (scalars)'>
          32
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=33 title='Matrices'>
+        data-slide=33 title='Vectors'>
          33
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=34 title='Data frames'>
+        data-slide=34 title='Vectors'>
          34
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=35 title='Data frames'>
+        data-slide=35 title='Vector functions'>
          35
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=36 title='Accessing column and row names'>
+        data-slide=36 title='Matrices'>
          36
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=37 title='Selecting data from a data.frame'>
+        data-slide=37 title='Data frames'>
          37
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=38 title='Creating new columns'>
+        data-slide=38 title='Data frames'>
          38
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=39 title='Data wrangling with dplyr'>
+        data-slide=39 title='Accessing column and row names'>
          39
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=40 title='Piping commands together'>
+        data-slide=40 title='Selecting data from a data.frame'>
          40
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=41 title='Managing data'>
+        data-slide=41 title='Creating new columns'>
          41
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=42 title='The R Workspace'>
+        data-slide=42 title='Data wrangling with dplyr'>
          42
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=43 title='Importing data into R'>
+        data-slide=43 title='Piping commands together'>
          43
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=44 title='Writing out data'>
+        data-slide=44 title='Managing data'>
          44
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=45 title='Other formats you can import into R'>
+        data-slide=45 title='The R Workspace'>
          45
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=46 title='Getting our hands dirty'>
+        data-slide=46 title='Importing data into R'>
          46
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=47 title='The IRIS data set'>
+        data-slide=47 title='Writing out data'>
          47
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=48 title='The IRIS data set'>
+        data-slide=48 title='Other formats you can import into R'>
          48
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=49 title='NA'>
+        data-slide=49 title='Getting our hands dirty'>
          49
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=50 title='NA'>
+        data-slide=50 title='The IRIS data set'>
          50
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=51 title='NA'>
+        data-slide=51 title='The IRIS data set'>
          51
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=52 title='Plotting the IRIS data'>
+        data-slide=52 title='NA'>
          52
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=53 title='Plotting the IRIS data'>
+        data-slide=53 title='NA'>
          53
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=54 title='Plotting the IRIS data'>
+        data-slide=54 title='NA'>
          54
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=55 title='Some very simple trend analyses'>
+        data-slide=55 title='Plotting the IRIS data'>
          55
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=56 title='Some very simple trend analyses'>
+        data-slide=56 title='Plotting the IRIS data'>
          56
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=57 title='Usually we use the lm() function..'>
+        data-slide=57 title='Plotting the IRIS data'>
          57
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=58 title='Hypothesis testing'>
+        data-slide=58 title='Some very simple trend analyses'>
          58
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=59 title='Hypothesis testing (t-test)'>
+        data-slide=59 title='Some very simple trend analyses'>
          59
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=60 title='Hypothesis testing (ANOVA)'>
+        data-slide=60 title='Usually we use the lm() function..'>
          60
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=61 title='Hypothesis testing'>
+         61
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=62 title='Hypothesis testing (t-test)'>
+         62
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=63 title='Hypothesis testing (ANOVA)'>
+         63
       </a>
     </li>
   </ul>

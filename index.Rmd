@@ -52,22 +52,95 @@ knit        : slidify::knit2slides
 
 ## Setting up a project
 
-* Put everything in one folder.
-* Avoid using `setwd()`.
-* Instead use RStudio projects.
+* Use RStudio projects instead.
+  * Avoids use of `setwd()`.
+  * Essential for advanced functions of RStudio.
+  * File > New Project...
+  
+  <img src="assets/img/rstudio_project.png" style="display: block; margin-left: auto; margin-right: auto; border-width: 1px; border-colour: #000000;border-style: solid;">
 
 ---
 
-## Dependency control...what?
+## Dependency control
+
+* R is constantly under development
+* Packages are constantly under development too
+* You may use 50 packages from 50 different authors.
+* Therefore it is important to keep records of which package versions you use for each project.
+
+---
+
+## Dependency control
+
+```{r}
+.libPaths()
+```
+
+---
+
+## Dependency control
+
+```{r}
+sessionInfo()
+```
+
+---
+
+## Dependency control
+
+### The better way
+
+```{r, eval=FALSE}
+
+# Install and load the checkpoint library
+
+install.packages("checkpoint")
+library(checkpoint)
+
+# Set a checkpoint for the project
+
+checkpoint("2016-05-22", use.knitr = TRUE)
+
+# Subsequently, you can load this snapshot with:
+
+setSnapshot("2016-05-22")
+
+```
+
+Watch your disk space! Some packages will need to be installed manually.
+
+---
+
+
+## Reproducibility
+
+* Code is for People (Not Computers).
+* In 3 months time, even you will need comments.
+  * Comment __why__ not how:
+  
+```
+# This is a comment
+```
+* Can you use a reproducible format?
 
 ---
 
 ## Reproducibility
 
-* Where is your data coming from?
-*
+### Markdown
 
----
+* Blends text, tables, figures...everything into a single document
+* This presentation is written using markdown.
+
+> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare dui urna, vel facilisis eros molestie in. Duis finibus eros sem, sodales luctus neque iaculis eget. Nam a fringilla massa. Sed sed dictum sapien.
+>
+>```{r}
+>
+># Plot for demonstration purposes
+>
+>plot(rnorm(100))
+>
+>```
 
 --- .intermezzo
 
