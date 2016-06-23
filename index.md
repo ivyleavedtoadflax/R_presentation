@@ -78,8 +78,10 @@ knit        : slidify::knit2slides
 ```
 
 ```
-## [1] "C:/Users/Matt/Documents/R/win-library/3.3"
-## [2] "C:/Program Files/R/R-3.3.1/library"
+## [1] "/home/matthew/R/x86_64-pc-linux-gnu-library/3.3"
+## [2] "/usr/local/lib/R/site-library"                  
+## [3] "/usr/lib/R/site-library"                        
+## [4] "/usr/lib/R/library"
 ```
 
 ---
@@ -92,25 +94,29 @@ sessionInfo()
 ```
 
 ```
-## R version 3.3.1 (2016-06-21)
-## Platform: i386-w64-mingw32/i386 (32-bit)
-## Running under: Windows 7 (build 7601) Service Pack 1
+## R version 3.3.0 (2016-05-03)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 14.04.4 LTS
 ## 
 ## locale:
-## [1] LC_COLLATE=English_United Kingdom.1252 
-## [2] LC_CTYPE=English_United Kingdom.1252   
-## [3] LC_MONETARY=English_United Kingdom.1252
-## [4] LC_NUMERIC=C                           
-## [5] LC_TIME=English_United Kingdom.1252    
+##  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+##  [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+##  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
+## other attached packages:
+## [1] dplyr_0.4.3
+## 
 ## loaded via a namespace (and not attached):
-##  [1] slidify_0.5      magrittr_1.5     formatR_1.4      markdown_0.7.7  
-##  [5] tools_3.3.1      whisker_0.3-2    yaml_2.1.13      codetools_0.2-14
-##  [9] stringi_1.1.1    knitr_1.13       digest_0.6.9     stringr_1.0.0   
-## [13] evaluate_0.9
+##  [1] lazyeval_0.2.0  R6_2.1.2        assertthat_0.1  magrittr_1.5   
+##  [5] rsconnect_0.4.3 formatR_1.4     parallel_3.3.0  DBI_0.4-1      
+##  [9] tools_3.3.0     Rcpp_0.12.5     stringi_1.1.1   knitr_1.13.1   
+## [13] stringr_1.0.0   evaluate_0.9
 ```
 
 ---
@@ -169,7 +175,7 @@ Watch your disk space! Some packages will need to be installed manually.
 >plot(rnorm(100))
 >```
 >
->![plot of chunk unnamed-chunk-4](assets/fig/unnamed-chunk-4-1.png)
+>![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 --- .intermezzo
 
@@ -289,14 +295,6 @@ Every function has a help function with syntax and examples:
 
 ```r
 ?read.csv
-```
-
-```
-## starting httpd help server ...
-```
-
-```
-##  done
 ```
 
 <div style="border: 1px solid #ccc; width: 100%; backgorund-color: #fff; padding: 10px 0;">
@@ -766,19 +764,14 @@ with(tax.mp, Tax / Income)
 
 ```r
 library(dplyr)
-```
 
-```
-## Error in library(dplyr): there is no package called 'dplyr'
-```
-
-```r
 # filter the fligths on the first day of the year
 filter(tax.mp, Party == 'Con', taxrate > 40)
 ```
 
 ```
-## Error in match.arg(method): object 'taxrate' not found
+##   sex Party    Name Income    Tax  taxrate
+## 1   M   Con Johnson 612583 276505 45.13756
 ```
 
 ```r
@@ -787,7 +780,12 @@ mutate(tax.mp, gain = Income - Tax)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "mutate"
+##   sex Party     Name Income    Tax  taxrate   gain
+## 1   M   Con  Cameron 200307  75898 37.89084 124409
+## 2   M   Con  Osborne 198738  72210 36.33427 126528
+## 3   M   Lab   Corbyn  70795  18912 26.71375  51883
+## 4   M   Con  Johnson 612583 276505 45.13756 336078
+## 5   F   SNP Sturgeon 104000  31000 29.80769  73000
 ```
 
 ---
@@ -806,7 +804,13 @@ tax.mp %>%                  # Specify original dataframe
 ```
 
 ```
-## Error in function_list[[i]](value): could not find function "group_by"
+## Source: local data frame [3 x 4]
+## 
+##    Party        a      b      c
+##   (fctr)    (dbl)  (dbl)  (dbl)
+## 1    Con 337209.3 198738 276505
+## 2    Lab  70795.0  70795  18912
+## 3    SNP 104000.0 104000  31000
 ```
 
 --- .intermezzo
@@ -1080,7 +1084,7 @@ SELECT Species, median(Sepal.Width) from iris GROUP BY Species
 plot(iris$Petal.Length, iris$Petal.Width, main="Edgar Anderson's Iris Data")
 ```
 
-![plot of chunk unnamed-chunk-43](assets/fig/unnamed-chunk-43-1.png)
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
 
 ---
 
@@ -1091,7 +1095,7 @@ plot(iris$Petal.Length, iris$Petal.Width, main="Edgar Anderson's Iris Data")
 plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species, main="Edgar Anderson's Iris Data")
 ```
 
-![plot of chunk unnamed-chunk-44](assets/fig/unnamed-chunk-44-1.png)
+![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44-1.png)
 
 ---
 
@@ -1102,13 +1106,13 @@ plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species, main="Edgar Anderson
 plot(iris[1:4], col=iris$Species)
 ```
 
-![plot of chunk unnamed-chunk-45](assets/fig/unnamed-chunk-45-1.png)
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
 
 ---
 
 ## Some very simple trend analyses
 
-![plot of chunk unnamed-chunk-46](assets/fig/unnamed-chunk-46-1.png)
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
 
 ```r
@@ -1130,7 +1134,7 @@ plot(iris$Petal.Length, iris$Petal.Width, col=iris$Species)
 abline(lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients, col="black")
 ```
 
-![plot of chunk unnamed-chunk-48](assets/fig/unnamed-chunk-48-1.png)
+![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
 
 ---
 
@@ -1172,7 +1176,7 @@ summary(model)
 boxplot(Sepal.Width ~ Species, iris)
 ```
 
-![plot of chunk unnamed-chunk-50](assets/fig/unnamed-chunk-50-1.png)
+![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50-1.png)
 
 Looks like the versicolor and virginica flowers' sepal width may be identical. 
 
