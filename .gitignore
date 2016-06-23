@@ -3,3 +3,5 @@ assets/fig/
 .cache/
 *.Rproj
 figure/
+.Rhistory
+libraries
