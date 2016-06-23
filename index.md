@@ -177,7 +177,7 @@ hard_to_read <- function(x) ifelse(x == 0, NA, x)
 ```r
 # Function to replace zero values with NA
 
-slightly_better <- function(x) {
+better <- function(x) {
   
   ifelse(x == 0, NA, x)
   

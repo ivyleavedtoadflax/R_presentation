@@ -1,3 +1,3 @@
 #!/usr/bin/env Rscript
 
-rmarkdown::render("index.Rmd")
+slidify::knit2slides("index.Rmd")
