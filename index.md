@@ -30,8 +30,8 @@ strong {
 
 * This session focusses on:
   * Some high level advice you might not hear elsewhere.
-  * A very simple walthrough
-  * Some advice for the future and where to get help
+  * A very simple walthrough.
+  * Some advice for the future and where to get help.
 
 ---
 
@@ -44,7 +44,7 @@ strong {
 
 
 ```r
-# CRAN 'vetted' package
+# CRAN 'vetted' packages
 install.packages("dplyr")
 library(dplyr)
 
@@ -170,14 +170,14 @@ Some packages will need to be installed manually. Watch your disk space!
 hard_to_read <- function(x) ifelse(x == 0, NA, x)
 ```
 
-* Make things readable
-* `# Comment liberally`
+* Make things readable.
+* `# Comment liberally`.
 
 
 ```r
 # Function to replace zero values with NA
 
-slightly_better <- function(x) {
+better <- function(x) {
   
   ifelse(x == 0, NA, x)
   
@@ -204,6 +204,8 @@ best <- function(x) {
 }
 ```
 
+Note that some of the code in this presentation is not as clear as this so that it fits on a single slide!
+
 ---
 
 ## Reproducibility and Clarity
@@ -220,13 +222,13 @@ best <- function(x) {
 * The RStudio environment
 * Getting the data in
 * Manipulating data
-* Producing an output
+* Producing outputs
 
 ---
 
 ## The RStudio environment
 
-<img src="assets/img/Rstudio.png" style="display: block; height: 550px;">
+<img src="assets/img/RStudio.png" style="display: block; height: 550px;">
 
 ---
 
@@ -247,152 +249,503 @@ ls()
 ## [1] "encoding"  "foo"       "inputFile"
 ```
 
-* Beware masking other functions.
+* Beware masking other objects.
 * `filter()` exists in package **stats** (loaded by default) and **dplyr** which you must load manually.
 * Use `dplyr::filter()` to explicitly call the one of interest.
+
+---
+
+## Getting data in
+
+Data can come from pretty much anywhere:
+* Databases.
+* Flat files.
+* The internet.
+
+---
+
+## Getting data in
+
+### Getting data from SQL server:
+
+[Set up data connection in windows](http://statistical-research.com/wp-content/uploads/2012/09/database-connect.pdf).
+
+
+```r
+# Install and load RODBC
+install.packages("RODBC")
+library(RODBC)
+
+# Set up a connection to the server
+conn <- odbcDriverConnect(
+  'driver={SQL Server};server=3DCPRI-PDB16;database=SWFC_Project;trusted_connection=true'
+  )
+
+# Get list of tables
+sqlTables(conn, tableType = "TABLE") 
+  
+# Execute query
+
+sqlQuery(conn, "SELECT TOP 10 * FROM TABLE;")
+```
+
+---
+  
+## Getting data in
+  
+### Getting data from SQL server:  
+
+For longer queries: better to keep the files in a separate .sql file, and load them into R as required.
+
+
+```r
+read_sql <- function(sql_file_path) {
+  # Check whether the sql file exists
+  stopifnot(file.exists(sql_file_path))
+  # Read the sql file
+  sql <- readChar(sql_file_path, nchar = file.info(path)$size)
+  # Return the query text
+  return(sql)
+}
+
+# Now pass a query to RODBC::sqlQuery
+
+sqlQuery(
+  conn,
+  read_sql("C:\\query.sql")
+)
+```
+
+---
+
+## Getting data in
+  
+### Getting data from flat files:
+
+
+```r
+library(readr)
+
+# Load data from local csv file
+
+lalonde <- read_csv("lalonde.csv")
+```
+
+Info about this data <http://users.nber.org/~rdehejia/data/nswdata2.html>
+
+---
+
+## Manipulating data
+
+First look at the data
+
+
+```r
+# Because I used readr::read_csv this is a tbl_df object
+lalonde
+```
+
+```
+## Source: local data frame [445 x 12]
+## 
+##      age  educ black  hisp married nodegr  re74  re75     re78   u74   u75
+##    (int) (int) (int) (int)   (int)  (int) (dbl) (dbl)    (dbl) (int) (int)
+## 1     37    11     1     0       1      1     0     0  9930.05     1     1
+## 2     22     9     0     1       0      1     0     0  3595.89     1     1
+## 3     30    12     1     0       0      0     0     0 24909.50     1     1
+## 4     27    11     1     0       0      1     0     0  7506.15     1     1
+## 5     33     8     1     0       0      1     0     0   289.79     1     1
+## 6     22     9     1     0       0      1     0     0  4056.49     1     1
+## 7     23    12     1     0       0      0     0     0     0.00     1     1
+## 8     32    11     1     0       0      1     0     0  8472.16     1     1
+## 9     22    16     1     0       0      0     0     0  2164.02     1     1
+## 10    33    12     0     0       1      0     0     0 12418.10     1     1
+## ..   ...   ...   ...   ...     ...    ...   ...   ...      ...   ...   ...
+## Variables not shown: treat (int)
+```
+
+---
+
+## Manipulating data
+
+Preparing the data
+
+
+```r
+# Change dummy variables to factors: the slow way!
+
+lalonde[,"black"] <- factor(lalonde[,"black"])
+lalonde[,"hisp"] <- factor(lalonde[,"hisp"])
+lalonde[,"married"] <- factor(lalonde[,"married"])
+lalonde[,"nodegr"] <- factor(lalonde[,"nodegr"])
+lalonde[,"treat"] <- factor(lalonde[,"treat"])
+lalonde[,"nodegr"] <- factor(lalonde[,"nodegr"])
+```
+
+---
+
+## Manipulating data
+
+Preparing the data
+
+
+```r
+library(dplyr)
+
+# A quicker way using the pipe (%>%)
+
+lalonde <- lalonde %>%
+  # Use the lalonde dataset
+  mutate_each(
+    # Apply the following listed functions to...
+    funs = funs(factor),
+    # The following factors...
+    black, hisp, married, nodegr, treat
+    )
+```
+
+---
+
+## Manipulating data
+
+Preparing the data
+
+
+```r
+levels(lalonde$black)
+```
+
+```
+## [1] "0" "1"
+```
+
+```r
+lalonde
+```
+
+```
+## Source: local data frame [445 x 12]
+## 
+##      age  educ  black   hisp married nodegr  re74  re75     re78   u74
+##    (int) (int) (fctr) (fctr)  (fctr) (fctr) (dbl) (dbl)    (dbl) (int)
+## 1     37    11      1      0       1      1     0     0  9930.05     1
+## 2     22     9      0      1       0      1     0     0  3595.89     1
+## 3     30    12      1      0       0      0     0     0 24909.50     1
+## 4     27    11      1      0       0      1     0     0  7506.15     1
+## 5     33     8      1      0       0      1     0     0   289.79     1
+## 6     22     9      1      0       0      1     0     0  4056.49     1
+## 7     23    12      1      0       0      0     0     0     0.00     1
+## 8     32    11      1      0       0      1     0     0  8472.16     1
+## 9     22    16      1      0       0      0     0     0  2164.02     1
+## 10    33    12      0      0       1      0     0     0 12418.10     1
+## ..   ...   ...    ...    ...     ...    ...   ...   ...      ...   ...
+## Variables not shown: u75 (int), treat (fctr)
+```
+
+---
+
+## Manipulating data
+
+The pipe (%>%) from package dplyr
+
+
+```r
+rnorm(10, mean = 10)
+```
+
+```
+##  [1]  9.738485 11.233118 11.040858 10.021327  9.816289  8.780478 10.160161
+##  [8]  9.611114 10.411079  7.865035
+```
+
+```r
+# The pipe passes output from one function to another
+rnorm(10, mean = 10) %>% mean %>% round(2)
+```
+
+```
+## [1] 10.25
+```
+
+```r
+# In old money, this is:
+round(mean(rnorm(10, mean = 10)), 2)
+```
+
+```
+## [1] 10.17
+```
+
+---
+
+## Producing an output
+
+A simple aggregation
+
+```r
+# SELECT AVG(re78) FROM lalonde GROUP BY educ
+
+re78_agg <- lalonde %>%
+  # Equivalent to GROUP BY in sql
+  group_by(educ) %>%
+  # equivalent to AVG(re78) in sql
+  summarise(
+    re78 = mean(re78)
+  )
+
+re78_agg
+```
+
+---
+
+## Producing an output
+
+A simple aggregation
+
+```
+## Source: local data frame [14 x 2]
+## 
+##     educ      re78
+##    (int)     (dbl)
+## 1      3  5843.800
+## 2      4  5172.575
+## 3      5  5383.200
+## 4      6  1976.970
+## 5      7  2910.147
+## 6      8  3767.879
+## 7      9  5850.919
+## 8     10  4827.663
+## 9     11  5119.780
+## 10    12  5744.598
+## 11    13  7249.487
+## 12    14 15200.663
+## 13    15  9598.540
+## 14    16  2164.020
+```
+
+---
+
+## Producing an output
+
+Linear regression
+
+```r
+# Regression real earnings in 1978 against years of education
+
+re78_model <- lm(re78 ~ educ, data = lalonde)
+
+# Get coefficients
+
+re78_model
+```
+
+```
+## 
+## Call:
+## lm(formula = re78 ~ educ, data = lalonde)
+## 
+## Coefficients:
+## (Intercept)         educ  
+##       918.2        429.9
+```
+
+---
+
+## Producing an output
+
+Linear regression
+
+# What about other stats?
+
+
+```r
+attributes(re78_model)
+```
+
+```
+## $names
+##  [1] "coefficients"  "residuals"     "effects"       "rank"         
+##  [5] "fitted.values" "assign"        "qr"            "df.residual"  
+##  [9] "xlevels"       "call"          "terms"         "model"        
+## 
+## $class
+## [1] "lm"
+```
+
+```r
+# Can now call these 'slots' with $
+
+re78_model$call
+```
+
+```
+## lm(formula = re78 ~ educ, data = lalonde)
+```
+
+---
+
+## Producing an output
+
+Get a more complete summary
+
+
+```r
+summary(re78_model)
+```
+
+```
+## 
+## Call:
+## lm(formula = re78 ~ educ, data = lalonde)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -6506  -5097  -1465   3253  54661 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)    918.2     1807.6   0.508   0.6117  
+## educ           429.9      174.6   2.462   0.0142 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 6594 on 443 degrees of freedom
+## Multiple R-squared:  0.01349,	Adjusted R-squared:  0.01127 
+## F-statistic:  6.06 on 1 and 443 DF,  p-value: 0.01421
+```
+
+---
+
+## Plotting
+
+Simple plots
+
+
+```r
+plot(
+  x = re78_agg$educ,
+  y = re78_agg$re78,
+  xlab = "Years of education",
+  ylab = "Real earnings in 1978 ($)"
+)
+```
+
+---
+
+## Plotting
+
+Simple plots
+
+![plot of chunk unnamed-chunk-23](assets/fig/unnamed-chunk-23-1.png)
+
+---
+
+## Plotting
+
+Intermediate plotting with ggplot2
+
+
+```r
+library(ggplot2)
+
+lalonde %>%
+  # Start with lalonde dataset, pass this to a plot function
+  ggplot +
+  # Set aesthetic for the whole plot
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  # Add a layer to the plot
+  geom_jitter(aes(col = nodegr)) +
+  geom_smooth(method ="lm", se = FALSE) +
+  xlab("Years of education") +
+  ylab("Real earnings in 1978 ($)")
+```
+
+---
+
+## Plotting
+
+Intermediate plotting with ggplot2
+
+![plot of chunk unnamed-chunk-25](assets/fig/unnamed-chunk-25-1.png)
 
 --- .intermezzo
 
 ## The long view
 
-* Functional programming
-* Testing your code
-* Writing packages
+* Where to get help
+* Don't reinvent the wheel
+* Getting more advanced
+
+---
+
+## Where to get help
+
+* Start with `?lm()`.
+* Google is your friend.
+* Stack Overflow.
+* [govdatascience.slack.com](govdatascience.slack.com)
+
+---
+
+## Don't reinvent the wheel
+
+* Your problem is not unique!
+* Your first port of call should be google (mine is).
+* Defining your problem is a skill.
 
 --- 
 
-## Functional programming
+## Getting more advanced
 
-__D__o not __R__epeat __Y__ourself 
-
-
----
-
-## Testing
-
----
-
-## RStudio
-
-
---- .intermezzo
-
-## Working with objects and functions
-
-* assignment
-* data types
-* the workspace
-* functions and arguments
-
----
-
-## Assignment 
-
-Everything in R is an object
-
-
---- .intermezzo
-
-## Loading data and getting libraries
-
-* loading data
-* libraries
-
---- .intermezzo
-
-## Rstudio Projects and getting help
-
-* Rstudio projects
-* Getting help in R
-
---- 
-
-### Base R console
-
-
-
----
-
-### RStudio
-
-<img src="assets/img/r_studio.png" style="display: block; height: 550px;">
-
----
-
-## Installing and using packages
-
-One of the strengths of R is that there are literally thousands of packages available for you to extend the core capabilities of the R statistical environment. 
+* Functional programming is the way forward:
 
 
 ```r
-# This installs the wordcloud package from CRAN
-install.packages('wordcloud')
+# Function to replace zero values with NA
+
+best <- function(x) {
+  
+  ifelse(
+    test = (x == 0), 
+    yes = NA, 
+    no = x)
+  
+}
 ```
 
-Then to use the package, you have to load it through the library command:
+--- 
+
+## Getting more advanced
+
+* Functions can be tested
 
 
 ```r
-library(wordcloud)
+library(testthat)
 
-wordcloud(
-  panama,            # this is data I mined from the common's hansard records
-  scale=c(5,0.5), 
-  max.words=100, 
-  random.order=FALSE, 
-  rot.per=0.35, 
-  use.r.layout=FALSE, 
-  colors=brewer.pal(8, 'Dark2')
+# Check that the output we get matches our expectation
+
+expect_identical(
+  best(c(0,1,2,3,4,5,0)),
+  c(c(NA,1,2,3,4,5,NA))
   )
 ```
 
----
+--- 
 
-## Installing and using packages *(Cont.)*
+## Getting more advanced
 
-And here are the 100 most used words in the House of Commons debate on the Panama papers (Mon 14 April 2016) represented as a word cloud:
-
-<img src="assets/img/wordcloud.png" height="420">
-
----
-
-## Getting help
-
-Every function has a help function with syntax and examples:
-
-<div style="border: 1px solid #ccc; width: 100%; backgorund-color: #fff; padding: 10px 0;">
-  <img src="assets/img/help.jpg" style="display: block; margin-left: auto; margin-right: auto;" />
-</div>
+* The next logical step is writing packages.
+  * Documentation.
+  * Portability.
+  * Reproducibility.
 
 ---
 
-## Helping yourself
+## Any Questions?
 
-There is a plethora of general help books available:
-<br />
-<div style="display: block; margin-left: auto; margin-right: auto">
-<img src="assets/img/copy-paste.jpg" height="420">
-<img src="assets/img/trying.jpg" height="420">
-</div>
-
----
-
-## Helping yourself
-
-If that doesn't work:
-<br />
-
-<div style="display: block; margin-left: auto; margin-right: auto">
-<img src="assets/img/google.jpg" height="420">
-</div>
-
---- .intermezzo
-
-## Best practice for using R and Rstudio
-
-* Commenting and clarity
-* Rstudio
-* Keep it reproducible
-* Avoiding dependency hell
-* Version control
-
+* Apologies for the lightning tour!
+* [matthew.upson@education.gsi.gov.uk](mailto:matthew.upson@education.gsi.gov.uk)

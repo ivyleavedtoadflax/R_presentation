@@ -63,8 +63,8 @@ strong {
 
 <ul>
 <li>Some high level advice you might not hear elsewhere.</li>
-<li>A very simple walthrough</li>
-<li>Some advice for the future and where to get help</li>
+<li>A very simple walthrough.</li>
+<li>Some advice for the future and where to get help.</li>
 </ul></li>
 </ul>
 
@@ -84,7 +84,7 @@ strong {
 <li>Supported by an enormous and active community.</li>
 </ul>
 
-<pre><code class="r"># CRAN &#39;vetted&#39; package
+<pre><code class="r"># CRAN &#39;vetted&#39; packages
 install.packages(&quot;dplyr&quot;)
 library(dplyr)
 
@@ -242,13 +242,13 @@ setSnapshot(&quot;2016-05-22&quot;)
 </code></pre>
 
 <ul>
-<li>Make things readable</li>
-<li><code># Comment liberally</code></li>
+<li>Make things readable.</li>
+<li><code># Comment liberally</code>.</li>
 </ul>
 
 <pre><code class="r"># Function to replace zero values with NA
 
-slightly_better &lt;- function(x) {
+better &lt;- function(x) {
 
   ifelse(x == 0, NA, x)
 
@@ -279,6 +279,8 @@ best &lt;- function(x) {
 
 }
 </code></pre>
+
+<p>Note that some of the code in this presentation is not as clear as this so that it fits on a single slide!</p>
 
   </article>
   <!-- Presenter Notes -->
@@ -312,7 +314,7 @@ best &lt;- function(x) {
 <li>The RStudio environment</li>
 <li>Getting the data in</li>
 <li>Manipulating data</li>
-<li>Producing an output</li>
+<li>Producing outputs</li>
 </ul>
 
   </article>
@@ -324,7 +326,7 @@ best &lt;- function(x) {
     <h2>The RStudio environment</h2>
   </hgroup>
   <article data-timings="">
-    <p><img src="assets/img/Rstudio.png" style="display: block; height: 550px;"></p>
+    <p><img src="assets/img/RStudio.png" style="display: block; height: 550px;"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -348,7 +350,7 @@ ls()
 </code></pre>
 
 <ul>
-<li>Beware masking other functions.</li>
+<li>Beware masking other objects.</li>
 <li><code>filter()</code> exists in package <strong>stats</strong> (loaded by default) and <strong>dplyr</strong> which you must load manually.</li>
 <li>Use <code>dplyr::filter()</code> to explicitly call the one of interest.</li>
 </ul>
@@ -357,15 +359,17 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-14" style="background:;">
+<slide class="" id="slide-14" style="background:;">
   <hgroup>
-    <h2>The long view</h2>
+    <h2>Getting data in</h2>
   </hgroup>
   <article data-timings="">
-    <ul>
-<li>Functional programming</li>
-<li>Testing your code</li>
-<li>Writing packages</li>
+    <p>Data can come from pretty much anywhere:</p>
+
+<ul>
+<li>Databases.</li>
+<li>Flat files.</li>
+<li>The internet.</li>
 </ul>
 
   </article>
@@ -374,10 +378,29 @@ ls()
 
 <slide class="" id="slide-15" style="background:;">
   <hgroup>
-    <h2>Functional programming</h2>
+    <h2>Getting data in</h2>
   </hgroup>
   <article data-timings="">
-    <p><strong>D</strong>o not <strong>R</strong>epeat <strong>Y</strong>ourself </p>
+    <h3>Getting data from SQL server:</h3>
+
+<p><a href="http://statistical-research.com/wp-content/uploads/2012/09/database-connect.pdf">Set up data connection in windows</a>.</p>
+
+<pre><code class="r"># Install and load RODBC
+install.packages(&quot;RODBC&quot;)
+library(RODBC)
+
+# Set up a connection to the server
+conn &lt;- odbcDriverConnect(
+  &#39;driver={SQL Server};server=3DCPRI-PDB16;database=SWFC_Project;trusted_connection=true&#39;
+  )
+
+# Get list of tables
+sqlTables(conn, tableType = &quot;TABLE&quot;) 
+
+# Execute query
+
+sqlQuery(conn, &quot;SELECT TOP 10 * FROM TABLE;&quot;)
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -385,35 +408,82 @@ ls()
 
 <slide class="" id="slide-16" style="background:;">
   <hgroup>
-    <h2>Testing</h2>
+    <h2>Getting data in</h2>
   </hgroup>
   <article data-timings="">
-    
+    <h3>Getting data from SQL server:</h3>
+
+<p>For longer queries: better to keep the files in a separate .sql file, and load them into R as required.</p>
+
+<pre><code class="r">read_sql &lt;- function(sql_file_path) {
+  # Check whether the sql file exists
+  stopifnot(file.exists(sql_file_path))
+  # Read the sql file
+  sql &lt;- readChar(sql_file_path, nchar = file.info(path)$size)
+  # Return the query text
+  return(sql)
+}
+
+# Now pass a query to RODBC::sqlQuery
+
+sqlQuery(
+  conn,
+  read_sql(&quot;C:\\query.sql&quot;)
+)
+</code></pre>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
 <slide class="" id="slide-17" style="background:;">
   <hgroup>
-    <h2>RStudio</h2>
+    <h2>Getting data in</h2>
   </hgroup>
   <article data-timings="">
-    
+    <h3>Getting data from flat files:</h3>
+
+<pre><code class="r">library(readr)
+
+# Load data from local csv file
+
+lalonde &lt;- read_csv(&quot;lalonde.csv&quot;)
+</code></pre>
+
+<p>Info about this data <a href="http://users.nber.org/%7Erdehejia/data/nswdata2.html">http://users.nber.org/~rdehejia/data/nswdata2.html</a></p>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-18" style="background:;">
+<slide class="" id="slide-18" style="background:;">
   <hgroup>
-    <h2>Working with objects and functions</h2>
+    <h2>Manipulating data</h2>
   </hgroup>
   <article data-timings="">
-    <ul>
-<li>assignment</li>
-<li>data types</li>
-<li>the workspace</li>
-<li>functions and arguments</li>
-</ul>
+    <p>First look at the data</p>
+
+<pre><code class="r"># Because I used readr::read_csv this is a tbl_df object
+lalonde
+</code></pre>
+
+<pre><code>## Source: local data frame [445 x 12]
+## 
+##      age  educ black  hisp married nodegr  re74  re75     re78   u74   u75
+##    (int) (int) (int) (int)   (int)  (int) (dbl) (dbl)    (dbl) (int) (int)
+## 1     37    11     1     0       1      1     0     0  9930.05     1     1
+## 2     22     9     0     1       0      1     0     0  3595.89     1     1
+## 3     30    12     1     0       0      0     0     0 24909.50     1     1
+## 4     27    11     1     0       0      1     0     0  7506.15     1     1
+## 5     33     8     1     0       0      1     0     0   289.79     1     1
+## 6     22     9     1     0       0      1     0     0  4056.49     1     1
+## 7     23    12     1     0       0      0     0     0     0.00     1     1
+## 8     32    11     1     0       0      1     0     0  8472.16     1     1
+## 9     22    16     1     0       0      0     0     0  2164.02     1     1
+## 10    33    12     0     0       1      0     0     0 12418.10     1     1
+## ..   ...   ...   ...   ...     ...    ...   ...   ...      ...   ...   ...
+## Variables not shown: treat (int)
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -421,38 +491,83 @@ ls()
 
 <slide class="" id="slide-19" style="background:;">
   <hgroup>
-    <h2>Assignment</h2>
+    <h2>Manipulating data</h2>
   </hgroup>
   <article data-timings="">
-    <p>Everything in R is an object</p>
+    <p>Preparing the data</p>
+
+<pre><code class="r"># Change dummy variables to factors: the slow way!
+
+lalonde[,&quot;black&quot;] &lt;- factor(lalonde[,&quot;black&quot;])
+lalonde[,&quot;hisp&quot;] &lt;- factor(lalonde[,&quot;hisp&quot;])
+lalonde[,&quot;married&quot;] &lt;- factor(lalonde[,&quot;married&quot;])
+lalonde[,&quot;nodegr&quot;] &lt;- factor(lalonde[,&quot;nodegr&quot;])
+lalonde[,&quot;treat&quot;] &lt;- factor(lalonde[,&quot;treat&quot;])
+lalonde[,&quot;nodegr&quot;] &lt;- factor(lalonde[,&quot;nodegr&quot;])
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-20" style="background:;">
+<slide class="" id="slide-20" style="background:;">
   <hgroup>
-    <h2>Loading data and getting libraries</h2>
+    <h2>Manipulating data</h2>
   </hgroup>
   <article data-timings="">
-    <ul>
-<li>loading data</li>
-<li>libraries</li>
-</ul>
+    <p>Preparing the data</p>
+
+<pre><code class="r">library(dplyr)
+
+# A quicker way using the pipe (%&gt;%)
+
+lalonde &lt;- lalonde %&gt;%
+  # Use the lalonde dataset
+  mutate_each(
+    # Apply the following listed functions to...
+    funs = funs(factor),
+    # The following factors...
+    black, hisp, married, nodegr, treat
+    )
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-21" style="background:;">
+<slide class="" id="slide-21" style="background:;">
   <hgroup>
-    <h2>Rstudio Projects and getting help</h2>
+    <h2>Manipulating data</h2>
   </hgroup>
   <article data-timings="">
-    <ul>
-<li>Rstudio projects</li>
-<li>Getting help in R</li>
-</ul>
+    <p>Preparing the data</p>
+
+<pre><code class="r">levels(lalonde$black)
+</code></pre>
+
+<pre><code>## [1] &quot;0&quot; &quot;1&quot;
+</code></pre>
+
+<pre><code class="r">lalonde
+</code></pre>
+
+<pre><code>## Source: local data frame [445 x 12]
+## 
+##      age  educ  black   hisp married nodegr  re74  re75     re78   u74
+##    (int) (int) (fctr) (fctr)  (fctr) (fctr) (dbl) (dbl)    (dbl) (int)
+## 1     37    11      1      0       1      1     0     0  9930.05     1
+## 2     22     9      0      1       0      1     0     0  3595.89     1
+## 3     30    12      1      0       0      0     0     0 24909.50     1
+## 4     27    11      1      0       0      1     0     0  7506.15     1
+## 5     33     8      1      0       0      1     0     0   289.79     1
+## 6     22     9      1      0       0      1     0     0  4056.49     1
+## 7     23    12      1      0       0      0     0     0     0.00     1
+## 8     32    11      1      0       0      1     0     0  8472.16     1
+## 9     22    16      1      0       0      0     0     0  2164.02     1
+## 10    33    12      0      0       1      0     0     0 12418.10     1
+## ..   ...   ...    ...    ...     ...    ...   ...   ...      ...   ...
+## Variables not shown: u75 (int), treat (fctr)
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -460,20 +575,55 @@ ls()
 
 <slide class="" id="slide-22" style="background:;">
   <hgroup>
-    <h3>Base R console</h3>
+    <h2>Manipulating data</h2>
   </hgroup>
   <article data-timings="">
-    
+    <p>The pipe (%&gt;%) from package dplyr</p>
+
+<pre><code class="r">rnorm(10, mean = 10)
+</code></pre>
+
+<pre><code>##  [1]  9.738485 11.233118 11.040858 10.021327  9.816289  8.780478 10.160161
+##  [8]  9.611114 10.411079  7.865035
+</code></pre>
+
+<pre><code class="r"># The pipe passes output from one function to another
+rnorm(10, mean = 10) %&gt;% mean %&gt;% round(2)
+</code></pre>
+
+<pre><code>## [1] 10.25
+</code></pre>
+
+<pre><code class="r"># In old money, this is:
+round(mean(rnorm(10, mean = 10)), 2)
+</code></pre>
+
+<pre><code>## [1] 10.17
+</code></pre>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
 <slide class="" id="slide-23" style="background:;">
   <hgroup>
-    <h3>RStudio</h3>
+    <h2>Producing an output</h2>
   </hgroup>
   <article data-timings="">
-    <p><img src="assets/img/r_studio.png" style="display: block; height: 550px;"></p>
+    <p>A simple aggregation</p>
+
+<pre><code class="r"># SELECT AVG(re78) FROM lalonde GROUP BY educ
+
+re78_agg &lt;- lalonde %&gt;%
+  # Equivalent to GROUP BY in sql
+  group_by(educ) %&gt;%
+  # equivalent to AVG(re78) in sql
+  summarise(
+    re78 = mean(re78)
+  )
+
+re78_agg
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -481,28 +631,29 @@ ls()
 
 <slide class="" id="slide-24" style="background:;">
   <hgroup>
-    <h2>Installing and using packages</h2>
+    <h2>Producing an output</h2>
   </hgroup>
   <article data-timings="">
-    <p>One of the strengths of R is that there are literally thousands of packages available for you to extend the core capabilities of the R statistical environment. </p>
+    <p>A simple aggregation</p>
 
-<pre><code class="r"># This installs the wordcloud package from CRAN
-install.packages(&#39;wordcloud&#39;)
-</code></pre>
-
-<p>Then to use the package, you have to load it through the library command:</p>
-
-<pre><code class="r">library(wordcloud)
-
-wordcloud(
-  panama,            # this is data I mined from the common&#39;s hansard records
-  scale=c(5,0.5), 
-  max.words=100, 
-  random.order=FALSE, 
-  rot.per=0.35, 
-  use.r.layout=FALSE, 
-  colors=brewer.pal(8, &#39;Dark2&#39;)
-  )
+<pre><code>## Source: local data frame [14 x 2]
+## 
+##     educ      re78
+##    (int)     (dbl)
+## 1      3  5843.800
+## 2      4  5172.575
+## 3      5  5383.200
+## 4      6  1976.970
+## 5      7  2910.147
+## 6      8  3767.879
+## 7      9  5850.919
+## 8     10  4827.663
+## 9     11  5119.780
+## 10    12  5744.598
+## 11    13  7249.487
+## 12    14 15200.663
+## 13    15  9598.540
+## 14    16  2164.020
 </code></pre>
 
   </article>
@@ -511,12 +662,28 @@ wordcloud(
 
 <slide class="" id="slide-25" style="background:;">
   <hgroup>
-    <h2>Installing and using packages <em>(Cont.)</em></h2>
+    <h2>Producing an output</h2>
   </hgroup>
   <article data-timings="">
-    <p>And here are the 100 most used words in the House of Commons debate on the Panama papers (Mon 14 April 2016) represented as a word cloud:</p>
+    <p>Linear regression</p>
 
-<p><img src="assets/img/wordcloud.png" height="420"></p>
+<pre><code class="r"># Regression real earnings in 1978 against years of education
+
+re78_model &lt;- lm(re78 ~ educ, data = lalonde)
+
+# Get coefficients
+
+re78_model
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = re78 ~ educ, data = lalonde)
+## 
+## Coefficients:
+## (Intercept)         educ  
+##       918.2        429.9
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -524,14 +691,32 @@ wordcloud(
 
 <slide class="" id="slide-26" style="background:;">
   <hgroup>
-    <h2>Getting help</h2>
+    <h2>Producing an output</h2>
   </hgroup>
   <article data-timings="">
-    <p>Every function has a help function with syntax and examples:</p>
+    <p>Linear regression</p>
 
-<div style="border: 1px solid #ccc; width: 100%; backgorund-color: #fff; padding: 10px 0;">
-  <img src="assets/img/help.jpg" style="display: block; margin-left: auto; margin-right: auto;" />
-</div>
+<h1>What about other stats?</h1>
+
+<pre><code class="r">attributes(re78_model)
+</code></pre>
+
+<pre><code>## $names
+##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
+##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
+##  [9] &quot;xlevels&quot;       &quot;call&quot;          &quot;terms&quot;         &quot;model&quot;        
+## 
+## $class
+## [1] &quot;lm&quot;
+</code></pre>
+
+<pre><code class="r"># Can now call these &#39;slots&#39; with $
+
+re78_model$call
+</code></pre>
+
+<pre><code>## lm(formula = re78 ~ educ, data = lalonde)
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -539,16 +724,33 @@ wordcloud(
 
 <slide class="" id="slide-27" style="background:;">
   <hgroup>
-    <h2>Helping yourself</h2>
+    <h2>Producing an output</h2>
   </hgroup>
   <article data-timings="">
-    <p>There is a plethora of general help books available:
-<br /></p>
+    <p>Get a more complete summary</p>
 
-<div style="display: block; margin-left: auto; margin-right: auto">
-<img src="assets/img/copy-paste.jpg" height="420">
-<img src="assets/img/trying.jpg" height="420">
-</div>
+<pre><code class="r">summary(re78_model)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = re78 ~ educ, data = lalonde)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -6506  -5097  -1465   3253  54661 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)    918.2     1807.6   0.508   0.6117  
+## educ           429.9      174.6   2.462   0.0142 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6594 on 443 degrees of freedom
+## Multiple R-squared:  0.01349,    Adjusted R-squared:  0.01127 
+## F-statistic:  6.06 on 1 and 443 DF,  p-value: 0.01421
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -556,31 +758,198 @@ wordcloud(
 
 <slide class="" id="slide-28" style="background:;">
   <hgroup>
-    <h2>Helping yourself</h2>
+    <h2>Plotting</h2>
   </hgroup>
   <article data-timings="">
-    <p>If that doesn&#39;t work:
-<br /></p>
+    <p>Simple plots</p>
 
-<div style="display: block; margin-left: auto; margin-right: auto">
-<img src="assets/img/google.jpg" height="420">
-</div>
+<pre><code class="r">plot(
+  x = re78_agg$educ,
+  y = re78_agg$re78,
+  xlab = &quot;Years of education&quot;,
+  ylab = &quot;Real earnings in 1978 ($)&quot;
+)
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-29" style="background:;">
+<slide class="" id="slide-29" style="background:;">
   <hgroup>
-    <h2>Best practice for using R and Rstudio</h2>
+    <h2>Plotting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Simple plots</p>
+
+<p><img src="assets/fig/unnamed-chunk-23-1.png" alt="plot of chunk unnamed-chunk-23"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-30" style="background:;">
+  <hgroup>
+    <h2>Plotting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Intermediate plotting with ggplot2</p>
+
+<pre><code class="r">library(ggplot2)
+
+lalonde %&gt;%
+  # Start with lalonde dataset, pass this to a plot function
+  ggplot +
+  # Set aesthetic for the whole plot
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  # Add a layer to the plot
+  geom_jitter(aes(col = nodegr)) +
+  geom_smooth(method =&quot;lm&quot;, se = FALSE) +
+  xlab(&quot;Years of education&quot;) +
+  ylab(&quot;Real earnings in 1978 ($)&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-31" style="background:;">
+  <hgroup>
+    <h2>Plotting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Intermediate plotting with ggplot2</p>
+
+<p><img src="assets/fig/unnamed-chunk-25-1.png" alt="plot of chunk unnamed-chunk-25"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="intermezzo" id="slide-32" style="background:;">
+  <hgroup>
+    <h2>The long view</h2>
   </hgroup>
   <article data-timings="">
     <ul>
-<li>Commenting and clarity</li>
-<li>Rstudio</li>
-<li>Keep it reproducible</li>
-<li>Avoiding dependency hell</li>
-<li>Version control</li>
+<li>Where to get help</li>
+<li>Don&#39;t reinvent the wheel</li>
+<li>Getting more advanced</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-33" style="background:;">
+  <hgroup>
+    <h2>Where to get help</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Start with <code>?lm()</code>.</li>
+<li>Google is your friend.</li>
+<li>Stack Overflow.</li>
+<li><a href="govdatascience.slack.com">govdatascience.slack.com</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-34" style="background:;">
+  <hgroup>
+    <h2>Don&#39;t reinvent the wheel</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Your problem is not unique!</li>
+<li>Your first port of call should be google (mine is).</li>
+<li>Defining your problem is a skill.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-35" style="background:;">
+  <hgroup>
+    <h2>Getting more advanced</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Functional programming is the way forward:</li>
+</ul>
+
+<pre><code class="r"># Function to replace zero values with NA
+
+best &lt;- function(x) {
+
+  ifelse(
+    test = (x == 0), 
+    yes = NA, 
+    no = x)
+
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-36" style="background:;">
+  <hgroup>
+    <h2>Getting more advanced</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Functions can be tested</li>
+</ul>
+
+<pre><code class="r">library(testthat)
+
+# Check that the output we get matches our expectation
+
+expect_identical(
+  best(c(0,1,2,3,4,5,0)),
+  c(c(NA,1,2,3,4,5,NA))
+  )
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-37" style="background:;">
+  <hgroup>
+    <h2>Getting more advanced</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The next logical step is writing packages.
+
+<ul>
+<li>Documentation.</li>
+<li>Portability.</li>
+<li>Reproducibility.</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-38" style="background:;">
+  <hgroup>
+    <h2>Any Questions?</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Apologies for the lightning tour!</li>
+<li><a href="mailto:matthew.upson@education.gsi.gov.uk">matthew.upson@education.gsi.gov.uk</a></li>
 </ul>
 
   </article>
@@ -671,98 +1040,152 @@ wordcloud(
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='The long view'>
+        data-slide=14 title='Getting data in'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='Functional programming'>
+        data-slide=15 title='Getting data in'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='Testing'>
+        data-slide=16 title='Getting data in'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='RStudio'>
+        data-slide=17 title='Getting data in'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Working with objects and functions'>
+        data-slide=18 title='Manipulating data'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='Assignment'>
+        data-slide=19 title='Manipulating data'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='Loading data and getting libraries'>
+        data-slide=20 title='Manipulating data'>
          20
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=21 title='Rstudio Projects and getting help'>
+        data-slide=21 title='Manipulating data'>
          21
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='Base R console'>
+        data-slide=22 title='Manipulating data'>
          22
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=23 title='RStudio'>
+        data-slide=23 title='Producing an output'>
          23
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=24 title='Installing and using packages'>
+        data-slide=24 title='Producing an output'>
          24
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=25 title='Installing and using packages <em>(Cont.)</em>'>
+        data-slide=25 title='Producing an output'>
          25
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=26 title='Getting help'>
+        data-slide=26 title='Producing an output'>
          26
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='Helping yourself'>
+        data-slide=27 title='Producing an output'>
          27
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=28 title='Helping yourself'>
+        data-slide=28 title='Plotting'>
          28
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=29 title='Best practice for using R and Rstudio'>
+        data-slide=29 title='Plotting'>
          29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Plotting'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Plotting'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='The long view'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Where to get help'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Don&#39;t reinvent the wheel'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Getting more advanced'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Getting more advanced'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Getting more advanced'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Any Questions?'>
+         38
       </a>
     </li>
   </ul>
