@@ -189,7 +189,7 @@ best <- function(x) {
 * The RStudio environment
 * Getting the data in
 * Manipulating data
-* Producing an output
+* Producing outputs
 
 ---
 
@@ -232,7 +232,7 @@ Data can come from pretty much anywhere:
 
 ### Getting data from SQL server:
 
-[Set up data connect in windows](http://statistical-research.com/wp-content/uploads/2012/09/database-connect.pdf).
+[Set up data connection in windows](http://statistical-research.com/wp-content/uploads/2012/09/database-connect.pdf).
 
 ```{r, eval=FALSE}
 
@@ -276,9 +276,117 @@ read.sql
 
 library(readr)
 
-my_data <- read_csv()
+# Load data from local csv file
+
+lalonde <- read_csv("lalonde.csv")
 
 ```
+
+Info about this data <http://users.nber.org/~rdehejia/data/nswdata2.html>
+
+---
+
+## Manipulating data
+
+First look at the data
+
+```{r}
+
+# Because I used readr::read_csv this is a tbl_df object
+lalonde
+```
+
+---
+
+## Manipulating data
+
+Checking data structure
+
+```{r}
+str(lalonde)
+```
+
+---
+
+## Manipulating data
+
+Preparing the data
+
+```{r}
+
+# Change dummy variables to factors: the slow way!
+
+lalonde[,"black"] <- factor(lalonde[,"black"])
+lalonde[,"hisp"] <- factor(lalonde[,"hisp"])
+lalonde[,"married"] <- factor(lalonde[,"married"])
+lalonde[,"nodegr"] <- factor(lalonde[,"nodegr"])
+lalonde[,"treat"] <- factor(lalonde[,"treat"])
+lalonde[,"nodegr"] <- factor(lalonde[,"nodegr"])
+```
+
+---
+
+## Manipulating data
+
+Preparing the data
+
+```{r, message=FALSE, warning=FALSE}
+
+library(dplyr)
+
+# A quicker way using the pipe (%>%)
+
+lalonde <- lalonde %>%
+  mutate_each(
+    funs = funs(factor),
+    black, hisp, married, nodegr, treat
+    )
+
+```
+
+---
+
+## Manipulating data
+
+The pipe (%>%)
+
+```{r}
+
+rnorm(10, mean = 10)
+
+# The pipe passes output from one function to another
+rnorm(10, mean = 10) %>% mean %>% round(2)
+
+# In old money, this is:
+round(mean(rnorm(10, mean = 10)), 2)
+
+```
+
+---
+
+## Manipulating data
+
+The pipe (%>%)
+
+```{r}
+
+rnorm(10, mean = 10)
+
+# The pipe passes output from one function to another
+rnorm(10, mean = 10) %>% mean %>% round(2)
+
+# In old money, this is:
+round(mean(rnorm(10, mean = 10)), 2)
+
+```
+
+---
+
+---
+
+
+## Producing an output
+
 
 --- .intermezzo
 
