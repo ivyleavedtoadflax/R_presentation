@@ -324,7 +324,7 @@ best &lt;- function(x) {
     <h2>The RStudio environment</h2>
   </hgroup>
   <article data-timings="">
-    <p><img src="assets/img/Rstudio.png" style="display: block; height: 550px;"></p>
+    <p><img src="assets/img/RStudio.png" style="display: block; height: 550px;"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -348,7 +348,7 @@ ls()
 </code></pre>
 
 <ul>
-<li>Beware masking other functions.</li>
+<li>Beware masking other objects.</li>
 <li><code>filter()</code> exists in package <strong>stats</strong> (loaded by default) and <strong>dplyr</strong> which you must load manually.</li>
 <li>Use <code>dplyr::filter()</code> to explicitly call the one of interest.</li>
 </ul>
@@ -357,12 +357,65 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-14" style="background:;">
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Getting data in</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Data can come from pretty much anywhere:</p>
+
+<ul>
+<li>Databases.</li>
+<li>Flat files.</li>
+<li>The internet.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Getting data in</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Getting data from SQL server:</h3>
+
+<p><a href="http://statistical-research.com/wp-content/uploads/2012/09/database-connect.pdf">Set up data connect in windows</a>.</p>
+
+<pre><code class="r"># Install and load RODBC
+install.packages(&quot;RODBC&quot;)
+library(RODBC)
+
+# Set up a connection to the server
+conn &lt;- odbcDriverConnect()
+
+# Get list of tables
+sqlTables(conn)
+
+# Execute query
+
+sqlQuery(conn, &quot;SELECT top 100 * FROM TABLE&quot;)
+</code></pre>
+
+<h3>Getting data from SQL server:</h3>
+
+<p>For longer queries: better to keep the files in a separate .sql file, and load them into R as required.</p>
+
+<pre><code class="r">read.sql
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="intermezzo" id="slide-16" style="background:;">
   <hgroup>
     <h2>The long view</h2>
   </hgroup>
   <article data-timings="">
     <ul>
+<li>Don&#39;t reinvent the wheel</li>
 <li>Functional programming</li>
 <li>Testing your code</li>
 <li>Writing packages</li>
@@ -372,7 +425,22 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-15" style="background:;">
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Don&#39;t reinvent the wheel</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Your problem is not unique!</li>
+<li>Your first port of call should be google (mine is).</li>
+<li>Defining your problem is a skill.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>Functional programming</h2>
   </hgroup>
@@ -383,7 +451,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-16" style="background:;">
+<slide class="" id="slide-19" style="background:;">
   <hgroup>
     <h2>Testing</h2>
   </hgroup>
@@ -393,7 +461,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-17" style="background:;">
+<slide class="" id="slide-20" style="background:;">
   <hgroup>
     <h2>RStudio</h2>
   </hgroup>
@@ -403,7 +471,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-18" style="background:;">
+<slide class="intermezzo" id="slide-21" style="background:;">
   <hgroup>
     <h2>Working with objects and functions</h2>
   </hgroup>
@@ -419,7 +487,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-19" style="background:;">
+<slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Assignment</h2>
   </hgroup>
@@ -430,7 +498,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-20" style="background:;">
+<slide class="intermezzo" id="slide-23" style="background:;">
   <hgroup>
     <h2>Loading data and getting libraries</h2>
   </hgroup>
@@ -444,7 +512,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-21" style="background:;">
+<slide class="intermezzo" id="slide-24" style="background:;">
   <hgroup>
     <h2>Rstudio Projects and getting help</h2>
   </hgroup>
@@ -458,7 +526,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-22" style="background:;">
+<slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h3>Base R console</h3>
   </hgroup>
@@ -468,7 +536,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-23" style="background:;">
+<slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h3>RStudio</h3>
   </hgroup>
@@ -479,7 +547,7 @@ ls()
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-24" style="background:;">
+<slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>Installing and using packages</h2>
   </hgroup>
@@ -490,59 +558,9 @@ ls()
 install.packages(&#39;wordcloud&#39;)
 </code></pre>
 
-<p>Then to use the package, you have to load it through the library command:</p>
+<h2>Helping yourself</h2>
 
-<pre><code class="r">library(wordcloud)
-
-wordcloud(
-  panama,            # this is data I mined from the common&#39;s hansard records
-  scale=c(5,0.5), 
-  max.words=100, 
-  random.order=FALSE, 
-  rot.per=0.35, 
-  use.r.layout=FALSE, 
-  colors=brewer.pal(8, &#39;Dark2&#39;)
-  )
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-25" style="background:;">
-  <hgroup>
-    <h2>Installing and using packages <em>(Cont.)</em></h2>
-  </hgroup>
-  <article data-timings="">
-    <p>And here are the 100 most used words in the House of Commons debate on the Panama papers (Mon 14 April 2016) represented as a word cloud:</p>
-
-<p><img src="assets/img/wordcloud.png" height="420"></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-26" style="background:;">
-  <hgroup>
-    <h2>Getting help</h2>
-  </hgroup>
-  <article data-timings="">
-    <p>Every function has a help function with syntax and examples:</p>
-
-<div style="border: 1px solid #ccc; width: 100%; backgorund-color: #fff; padding: 10px 0;">
-  <img src="assets/img/help.jpg" style="display: block; margin-left: auto; margin-right: auto;" />
-</div>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-27" style="background:;">
-  <hgroup>
-    <h2>Helping yourself</h2>
-  </hgroup>
-  <article data-timings="">
-    <p>There is a plethora of general help books available:
+<p>There is a plethora of general help books available:
 <br /></p>
 
 <div style="display: block; margin-left: auto; margin-right: auto">
@@ -565,23 +583,6 @@ wordcloud(
 <div style="display: block; margin-left: auto; margin-right: auto">
 <img src="assets/img/google.jpg" height="420">
 </div>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="intermezzo" id="slide-29" style="background:;">
-  <hgroup>
-    <h2>Best practice for using R and Rstudio</h2>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>Commenting and clarity</li>
-<li>Rstudio</li>
-<li>Keep it reproducible</li>
-<li>Avoiding dependency hell</li>
-<li>Version control</li>
-</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -671,85 +672,85 @@ wordcloud(
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='The long view'>
+        data-slide=14 title='Getting data in'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='Functional programming'>
+        data-slide=15 title='Getting data in'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='Testing'>
+        data-slide=16 title='The long view'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='RStudio'>
+        data-slide=17 title='Don&#39;t reinvent the wheel'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Working with objects and functions'>
+        data-slide=18 title='Functional programming'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='Assignment'>
+        data-slide=19 title='Testing'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='Loading data and getting libraries'>
+        data-slide=20 title='RStudio'>
          20
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=21 title='Rstudio Projects and getting help'>
+        data-slide=21 title='Working with objects and functions'>
          21
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='Base R console'>
+        data-slide=22 title='Assignment'>
          22
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=23 title='RStudio'>
+        data-slide=23 title='Loading data and getting libraries'>
          23
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=24 title='Installing and using packages'>
+        data-slide=24 title='Rstudio Projects and getting help'>
          24
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=25 title='Installing and using packages <em>(Cont.)</em>'>
+        data-slide=25 title='Base R console'>
          25
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=26 title='Getting help'>
+        data-slide=26 title='RStudio'>
          26
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='Helping yourself'>
+        data-slide=27 title='Installing and using packages'>
          27
       </a>
     </li>
@@ -757,12 +758,6 @@ wordcloud(
       <a href="#" target="_self" rel='tooltip' 
         data-slide=28 title='Helping yourself'>
          28
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=29 title='Best practice for using R and Rstudio'>
-         29
       </a>
     </li>
   </ul>

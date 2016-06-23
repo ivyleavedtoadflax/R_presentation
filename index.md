@@ -226,7 +226,7 @@ best <- function(x) {
 
 ## The RStudio environment
 
-<img src="assets/img/Rstudio.png" style="display: block; height: 550px;">
+<img src="assets/img/RStudio.png" style="display: block; height: 550px;">
 
 ---
 
@@ -247,24 +247,75 @@ ls()
 ## [1] "encoding"  "foo"       "inputFile"
 ```
 
-* Beware masking other functions.
+* Beware masking other objects.
 * `filter()` exists in package **stats** (loaded by default) and **dplyr** which you must load manually.
 * Use `dplyr::filter()` to explicitly call the one of interest.
+
+---
+
+## Getting data in
+
+Data can come from pretty much anywhere:
+* Databases.
+* Flat files.
+* The internet.
+
+---
+
+## Getting data in
+
+### Getting data from SQL server:
+
+[Set up data connect in windows](http://statistical-research.com/wp-content/uploads/2012/09/database-connect.pdf).
+
+
+```r
+# Install and load RODBC
+install.packages("RODBC")
+library(RODBC)
+
+# Set up a connection to the server
+conn <- odbcDriverConnect()
+
+# Get list of tables
+sqlTables(conn)
+  
+# Execute query
+
+sqlQuery(conn, "SELECT top 100 * FROM TABLE")
+```
+  
+### Getting data from SQL server:  
+
+For longer queries: better to keep the files in a separate .sql file, and load them into R as required.
+
+
+```r
+read.sql
+```
 
 --- .intermezzo
 
 ## The long view
 
+* Don't reinvent the wheel
 * Functional programming
 * Testing your code
 * Writing packages
+
+---
+
+## Don't reinvent the wheel
+
+* Your problem is not unique!
+* Your first port of call should be google (mine is).
+* Defining your problem is a skill.
 
 --- 
 
 ## Functional programming
 
 __D__o not __R__epeat __Y__ourself 
-
 
 ---
 
@@ -329,42 +380,6 @@ One of the strengths of R is that there are literally thousands of packages avai
 install.packages('wordcloud')
 ```
 
-Then to use the package, you have to load it through the library command:
-
-
-```r
-library(wordcloud)
-
-wordcloud(
-  panama,            # this is data I mined from the common's hansard records
-  scale=c(5,0.5), 
-  max.words=100, 
-  random.order=FALSE, 
-  rot.per=0.35, 
-  use.r.layout=FALSE, 
-  colors=brewer.pal(8, 'Dark2')
-  )
-```
-
----
-
-## Installing and using packages *(Cont.)*
-
-And here are the 100 most used words in the House of Commons debate on the Panama papers (Mon 14 April 2016) represented as a word cloud:
-
-<img src="assets/img/wordcloud.png" height="420">
-
----
-
-## Getting help
-
-Every function has a help function with syntax and examples:
-
-<div style="border: 1px solid #ccc; width: 100%; backgorund-color: #fff; padding: 10px 0;">
-  <img src="assets/img/help.jpg" style="display: block; margin-left: auto; margin-right: auto;" />
-</div>
-
----
 
 ## Helping yourself
 
@@ -385,14 +400,3 @@ If that doesn't work:
 <div style="display: block; margin-left: auto; margin-right: auto">
 <img src="assets/img/google.jpg" height="420">
 </div>
-
---- .intermezzo
-
-## Best practice for using R and Rstudio
-
-* Commenting and clarity
-* Rstudio
-* Keep it reproducible
-* Avoiding dependency hell
-* Version control
-
