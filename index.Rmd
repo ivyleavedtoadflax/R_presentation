@@ -30,8 +30,8 @@ strong {
 
 * This session focusses on:
   * Some high level advice you might not hear elsewhere.
-  * A very simple walthrough
-  * Some advice for the future and where to get help
+  * A very simple walthrough.
+  * Some advice for the future and where to get help.
 
 ---
 
@@ -43,7 +43,7 @@ strong {
 * Supported by an enormous and active community.
 
 ```{r, eval=FALSE}
-# CRAN 'vetted' package
+# CRAN 'vetted' packages
 install.packages("dplyr")
 library(dplyr)
 
@@ -137,8 +137,8 @@ hard_to_read <- function(x) ifelse(x == 0, NA, x)
 
 ```
 
-* Make things readable
-* `# Comment liberally`
+* Make things readable.
+* `# Comment liberally`.
 
 ```{r, eval=FALSE}
 
@@ -172,6 +172,8 @@ best <- function(x) {
 }
 
 ```
+
+Note that some of the code in this presentation is not as clear as this so that it fits on a single slide!
 
 ---
 
@@ -241,14 +243,16 @@ install.packages("RODBC")
 library(RODBC)
 
 # Set up a connection to the server
-conn <- odbcDriverConnect()
+conn <- odbcDriverConnect(
+  'driver={SQL Server};server=3DCPRI-PDB16;database=SWFC_Project;trusted_connection=true'
+  )
 
 # Get list of tables
-sqlTables(conn)
+sqlTables(conn, tableType = "TABLE") 
   
 # Execute query
 
-sqlQuery(conn, "SELECT top 100 * FROM TABLE")
+sqlQuery(conn, "SELECT TOP 10 * FROM TABLE;")
 
 ```
 
@@ -262,7 +266,21 @@ For longer queries: better to keep the files in a separate .sql file, and load t
 
 ```{r, eval=FALSE}
 
-read.sql
+read_sql <- function(sql_file_path) {
+  # Check whether the sql file exists
+  stopifnot(file.exists(sql_file_path))
+  # Read the sql file
+  sql <- readChar(sql_file_path, nchar = file.info(path)$size)
+  # Return the query text
+  return(sql)
+}
+
+# Now pass a query to RODBC::sqlQuery
+
+sqlQuery(
+  conn,
+  read_sql("C:\\query.sql")
+)
 
 ```
 
@@ -300,19 +318,9 @@ lalonde
 
 ## Manipulating data
 
-Checking data structure
-
-```{r}
-str(lalonde)
-```
-
----
-
-## Manipulating data
-
 Preparing the data
 
-```{r}
+```{r, eval=FALSE}
 
 # Change dummy variables to factors: the slow way!
 
@@ -337,8 +345,11 @@ library(dplyr)
 # A quicker way using the pipe (%>%)
 
 lalonde <- lalonde %>%
+  # Use the lalonde dataset
   mutate_each(
+    # Apply the following listed functions to...
     funs = funs(factor),
+    # The following factors...
     black, hisp, married, nodegr, treat
     )
 
@@ -348,17 +359,13 @@ lalonde <- lalonde %>%
 
 ## Manipulating data
 
-The pipe (%>%)
+Preparing the data
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
-rnorm(10, mean = 10)
+levels(lalonde$black)
 
-# The pipe passes output from one function to another
-rnorm(10, mean = 10) %>% mean %>% round(2)
-
-# In old money, this is:
-round(mean(rnorm(10, mean = 10)), 2)
+lalonde
 
 ```
 
@@ -366,7 +373,7 @@ round(mean(rnorm(10, mean = 10)), 2)
 
 ## Manipulating data
 
-The pipe (%>%)
+The pipe (%>%) from package dplyr
 
 ```{r}
 
@@ -382,20 +389,199 @@ round(mean(rnorm(10, mean = 10)), 2)
 
 ---
 
----
+## Producing an output
 
+A simple aggregation
+```{r, eval=FALSE}
+
+# SELECT AVG(re78) FROM lalonde GROUP BY educ
+
+re78_agg <- lalonde %>%
+  # Equivalent to GROUP BY in sql
+  group_by(educ) %>%
+  # equivalent to AVG(re78) in sql
+  summarise(
+    re78 = mean(re78)
+  )
+
+re78_agg
+
+```
+
+---
 
 ## Producing an output
 
+A simple aggregation
+```{r, echo=FALSE}
+
+re78_agg <- lalonde %>%
+  # Equivalent to GROUP BY in sql
+  group_by(educ) %>%
+  # equivalent to AVG(re78) in sql
+  summarise(
+    re78 = mean(re78)
+  )
+
+re78_agg
+
+```
+
+---
+
+## Producing an output
+
+Linear regression
+```{r}
+
+# Regression real earnings in 1978 against years of education
+
+re78_model <- lm(re78 ~ educ, data = lalonde)
+
+# Get coefficients
+
+re78_model
+
+```
+
+---
+
+## Producing an output
+
+Linear regression
+
+# What about other stats?
+
+```{r}
+
+attributes(re78_model)
+
+# Can now call these 'slots' with $
+
+re78_model$call
+
+```
+
+---
+
+## Producing an output
+
+Get a more complete summary
+
+```{r}
+
+summary(re78_model)
+
+```
+
+---
+
+## Plotting
+
+Simple plots
+
+```{r, eval=FALSE}
+
+plot(
+  x = re78_agg$educ,
+  y = re78_agg$re78,
+  xlab = "Years of education",
+  ylab = "Real earnings in 1978 ($)"
+)
+
+```
+
+---
+
+## Plotting
+
+Simple plots
+
+```{r, echo=FALSE}
+
+plot(
+  x = re78_agg$educ,
+  y = re78_agg$re78,
+  xlab = "Years of education",
+  ylab = "Real earnings in 1978 ($)"
+)
+
+```
+
+---
+
+## Plotting
+
+Intermediate plotting with ggplot2
+
+```{r, eval=FALSE}
+
+library(ggplot2)
+
+lalonde %>%
+  # Start with lalonde dataset, pass this to a plot function
+  ggplot +
+  # Set aesthetic for the whole plot
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  # Add a layer to the plot
+  geom_jitter(aes(col = nodegr)) +
+  geom_smooth(method ="lm", se = FALSE) +
+  xlab("Years of education") +
+  ylab("Real earnings in 1978 ($)")
+
+```
+
+---
+
+## Plotting
+
+Intermediate plotting with ggplot2
+
+```{r, eval=TRUE, echo=FALSE, fig.width=8, fig.height=5}
+
+library(ggplot2)
+
+lalonde %>%
+  # Start with lalonde dataset, pass this to a plot function
+  ggplot +
+  # Set aesthetic for teh whoel plot
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  # Add a layer to the plot
+  geom_jitter(
+    aes(
+      col = nodegr)
+  ) +
+  geom_smooth(
+    method ="lm",
+    se = FALSE
+  ) +
+  xlab("Years of education") +
+  ylab("Real earnings in 1978 ($)")
+
+```
 
 --- .intermezzo
 
 ## The long view
 
+* Where to get help
 * Don't reinvent the wheel
-* Functional programming
-* Testing your code
-* Writing packages
+* Getting more advanced
+
+---
+
+## Where to get help
+
+* Start with `?lm()`.
+* Google is your friend.
+* Stack Overflow.
+* [govdatascience.slack.com](govdatascience.slack.com)
 
 ---
 
@@ -407,89 +593,56 @@ round(mean(rnorm(10, mean = 10)), 2)
 
 --- 
 
-## Functional programming
+## Getting more advanced
 
-__D__o not __R__epeat __Y__ourself 
+* Functional programming is the way forward:
 
----
+```{r, eval=FALSE}
 
-## Testing
+# Function to replace zero values with NA
 
----
+best <- function(x) {
+  
+  ifelse(
+    test = (x == 0), 
+    yes = NA, 
+    no = x)
+  
+}
 
-## RStudio
-
-
---- .intermezzo
-
-## Working with objects and functions
-
-* assignment
-* data types
-* the workspace
-* functions and arguments
-
----
-
-## Assignment 
-
-Everything in R is an object
-
-
---- .intermezzo
-
-## Loading data and getting libraries
-
-* loading data
-* libraries
-
---- .intermezzo
-
-## Rstudio Projects and getting help
-
-* Rstudio projects
-* Getting help in R
+```
 
 --- 
 
-### Base R console
+## Getting more advanced
 
+* Functions can be tested
 
+```{r, eval=FALSE}
 
----
+library(testthat)
 
-### RStudio
+# Check that the output we get matches our expectation
 
-<img src="assets/img/r_studio.png" style="display: block; height: 550px;">
+expect_identical(
+  best(c(0,1,2,3,4,5,0)),
+  c(c(NA,1,2,3,4,5,NA))
+  )
 
----
+```
 
-## Installing and using packages
+--- 
 
-One of the strengths of R is that there are literally thousands of packages available for you to extend the core capabilities of the R statistical environment. 
+## Getting more advanced
 
-```{r eval=FALSE}
-# This installs the wordcloud package from CRAN
-install.packages('wordcloud')
-``` 
-
-
-## Helping yourself
-
-There is a plethora of general help books available:
-<br />
-<div style="display: block; margin-left: auto; margin-right: auto">
-<img src="assets/img/copy-paste.jpg" height="420">
-<img src="assets/img/trying.jpg" height="420">
-</div>
+* The next logical step is writing packages.
+  * Documentation.
+  * Portability.
+  * Reproducibility.
 
 ---
 
-## Helping yourself
+## Any Questions?
 
-If that doesn't work:
-<br />
-
-<div style="display: block; margin-left: auto; margin-right: auto">
-<img src="assets/img/google.jpg" height="420">
-</div>
+* Apologies for the lightning tour!
+* [matthew.upson@education.gsi.gov.uk](mailto:matthew.upson@education.gsi.gov.uk)
