@@ -3,7 +3,7 @@ title       : A (very) brief introduction to R
 subtitle    : June 21 2016
 author      : Matthew Upson PhD
 credit      : Arthur Lugtigheid PhD
-job         : Data Scientist (ESEDD)
+job         : Data Scientist
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
@@ -748,4 +748,3 @@ expect_identical(
 ## Any Questions?
 
 * Apologies for the lightning tour!
-* [matthew.upson@education.gsi.gov.uk](mailto:matthew.upson@education.gsi.gov.uk)
