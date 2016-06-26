@@ -636,7 +636,7 @@ plot(
 
 Simple plots
 
-![plot of chunk unnamed-chunk-23](assets/fig/unnamed-chunk-23-1.png)
+![plot of chunk simple_plot_plot](assets/fig/simple_plot_plot-1.png)
 
 ---
 
@@ -669,7 +669,45 @@ lalonde %>%
 
 Intermediate plotting with ggplot2
 
-![plot of chunk unnamed-chunk-25](assets/fig/unnamed-chunk-25-1.png)
+![plot of chunk ggplot_plot](assets/fig/ggplot_plot-1.png)
+
+---
+
+## Plotting
+
+A more gov.uk friendly style
+
+
+```r
+library(ggplot2)
+library(govstyle)
+
+re78_agg %>%
+  ggplot +
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  geom_bar(
+    stat = "identity",
+    fill = unname(gov_cols["turquoise"])
+  ) + 
+  xlab("Years of education") +
+  ylab("Real earnings in 1978 ($)") +
+  theme_gov() +
+  theme(
+    legend.position = "right",
+    legend.key = element_blank()
+  )
+```
+
+---
+
+## Plotting
+
+A more gov.uk friendly style
+
+![plot of chunk ggplot_govstyle_plot](assets/fig/ggplot_govstyle_plot-1.png)
 
 --- .intermezzo
 
@@ -729,8 +767,12 @@ library(testthat)
 # Check that the output we get matches our expectation
 
 expect_identical(
+  # our function replaces zeros with NA - so our first argument we ask our
+  # function to do this
   best(c(0,1,2,3,4,5,0)),
-  c(c(NA,1,2,3,4,5,NA))
+  # In the second argument, we give what we expect - the same vector, but with
+  # zeros converted to NAs
+  c(NA,1,2,3,4,5,NA)
   )
 ```
 
