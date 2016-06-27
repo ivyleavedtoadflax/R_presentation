@@ -782,7 +782,7 @@ re78_model$call
   <article data-timings="">
     <p>Simple plots</p>
 
-<p><img src="assets/fig/unnamed-chunk-23-1.png" alt="plot of chunk unnamed-chunk-23"></p>
+<p><img src="assets/fig/simple_plot_plot-1.png" alt="plot of chunk simple_plot_plot"></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -823,13 +823,59 @@ lalonde %&gt;%
   <article data-timings="">
     <p>Intermediate plotting with ggplot2</p>
 
-<p><img src="assets/fig/unnamed-chunk-25-1.png" alt="plot of chunk unnamed-chunk-25"></p>
+<p><img src="assets/fig/ggplot_plot-1.png" alt="plot of chunk ggplot_plot"></p>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="intermezzo" id="slide-32" style="background:;">
+<slide class="" id="slide-32" style="background:;">
+  <hgroup>
+    <h2>Plotting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A more gov.uk friendly style</p>
+
+<pre><code class="r">library(ggplot2)
+library(govstyle)
+
+re78_agg %&gt;%
+  ggplot +
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  geom_bar(
+    stat = &quot;identity&quot;,
+    fill = unname(gov_cols[&quot;turquoise&quot;])
+  ) + 
+  xlab(&quot;Years of education&quot;) +
+  ylab(&quot;Real earnings in 1978 ($)&quot;) +
+  theme_gov() +
+  theme(
+    legend.position = &quot;right&quot;,
+    legend.key = element_blank()
+  )
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-33" style="background:;">
+  <hgroup>
+    <h2>Plotting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A more gov.uk friendly style</p>
+
+<p><img src="assets/fig/ggplot_govstyle_plot-1.png" alt="plot of chunk ggplot_govstyle_plot"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="intermezzo" id="slide-34" style="background:;">
   <hgroup>
     <h2>The long view</h2>
   </hgroup>
@@ -844,7 +890,7 @@ lalonde %&gt;%
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-33" style="background:;">
+<slide class="" id="slide-35" style="background:;">
   <hgroup>
     <h2>Where to get help</h2>
   </hgroup>
@@ -860,7 +906,7 @@ lalonde %&gt;%
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-34" style="background:;">
+<slide class="" id="slide-36" style="background:;">
   <hgroup>
     <h2>Don&#39;t reinvent the wheel</h2>
   </hgroup>
@@ -875,7 +921,7 @@ lalonde %&gt;%
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-35" style="background:;">
+<slide class="" id="slide-37" style="background:;">
   <hgroup>
     <h2>Getting more advanced</h2>
   </hgroup>
@@ -900,7 +946,7 @@ best &lt;- function(x) {
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-36" style="background:;">
+<slide class="" id="slide-38" style="background:;">
   <hgroup>
     <h2>Getting more advanced</h2>
   </hgroup>
@@ -914,8 +960,12 @@ best &lt;- function(x) {
 # Check that the output we get matches our expectation
 
 expect_identical(
+  # our function replaces zeros with NA - so our first argument we ask our
+  # function to do this
   best(c(0,1,2,3,4,5,0)),
-  c(c(NA,1,2,3,4,5,NA))
+  # In the second argument, we give what we expect - the same vector, but with
+  # zeros converted to NAs
+  c(NA,1,2,3,4,5,NA)
   )
 </code></pre>
 
@@ -923,7 +973,7 @@ expect_identical(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-37" style="background:;">
+<slide class="" id="slide-39" style="background:;">
   <hgroup>
     <h2>Getting more advanced</h2>
   </hgroup>
@@ -942,7 +992,7 @@ expect_identical(
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-38" style="background:;">
+<slide class="" id="slide-40" style="background:;">
   <hgroup>
     <h2>Any Questions?</h2>
   </hgroup>
@@ -1147,31 +1197,31 @@ expect_identical(
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=32 title='The long view'>
+        data-slide=32 title='Plotting'>
          32
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=33 title='Where to get help'>
+        data-slide=33 title='Plotting'>
          33
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=34 title='Don&#39;t reinvent the wheel'>
+        data-slide=34 title='The long view'>
          34
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=35 title='Getting more advanced'>
+        data-slide=35 title='Where to get help'>
          35
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=36 title='Getting more advanced'>
+        data-slide=36 title='Don&#39;t reinvent the wheel'>
          36
       </a>
     </li>
@@ -1183,8 +1233,20 @@ expect_identical(
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=38 title='Any Questions?'>
+        data-slide=38 title='Getting more advanced'>
          38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Getting more advanced'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Any Questions?'>
+         40
       </a>
     </li>
   </ul>

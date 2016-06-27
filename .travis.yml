@@ -4,10 +4,14 @@ cache: packages
 
 r_packages:
  - devtools
+ - rmarkdown
+ - dplyr
 
 r_github_packages:
  - ramnathv/slidify
  - ramnathv/slidifyLibraries
+ - MangoTheCat/visualTest
+ - ivyleavedtoadflax/govstyle
 
 install:
   - Rscript -e "if (!require('devtools')) install.packages('devtools')"
@@ -15,6 +19,8 @@ install:
   - Rscript -e "if (!require('dplyr')) install.packages('dplyr')"
   - Rscript -e "devtools::install_github('ramnathv/slidify')"
   - Rscript -e "devtools::install_github('ramnathv/slidifyLibraries')"
+  - Rscript -e "devtools::install_github('MangoTheCat/visualTest')"
+  - Rscript -e "devtools::install_github('ivyleavedtoadflax/govstyle')"
 
 before_script:
   - chmod +x ./_build.sh

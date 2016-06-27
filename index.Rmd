@@ -68,7 +68,7 @@ devtools::install_local("C://govstyle-master.zip")
 
 ## Setting up a project
 
-* Use RStudio projects instead.
+* Use RStudio projects.
   * Avoids use of `setwd()` - required for advanced functionality.
   * File > New Project...
   
@@ -480,7 +480,7 @@ summary(re78_model)
 
 Simple plots
 
-```{r, eval=FALSE}
+```{r simple_plot_code, eval=FALSE}
 
 plot(
   x = re78_agg$educ,
@@ -497,7 +497,7 @@ plot(
 
 Simple plots
 
-```{r, echo=FALSE}
+```{r simple_plot_plot, echo=FALSE}
 
 plot(
   x = re78_agg$educ,
@@ -514,7 +514,7 @@ plot(
 
 Intermediate plotting with ggplot2
 
-```{r, eval=FALSE}
+```{r ggplot_code, eval=FALSE}
 
 library(ggplot2)
 
@@ -540,30 +540,84 @@ lalonde %>%
 
 Intermediate plotting with ggplot2
 
-```{r, eval=TRUE, echo=FALSE, fig.width=8, fig.height=5}
+```{r ggplot_plot, eval=TRUE, echo=FALSE, fig.width=8, fig.height=5}
 
 library(ggplot2)
 
 lalonde %>%
   # Start with lalonde dataset, pass this to a plot function
   ggplot +
-  # Set aesthetic for teh whoel plot
+  # Set aesthetic for the whole plot
   aes(
     x = educ,
     y = re78
   ) +
   # Add a layer to the plot
-  geom_jitter(
-    aes(
-      col = nodegr)
-  ) +
-  geom_smooth(
-    method ="lm",
-    se = FALSE
-  ) +
+  geom_jitter(aes(col = nodegr)) +
+  geom_smooth(method ="lm", se = FALSE) +
   xlab("Years of education") +
   ylab("Real earnings in 1978 ($)")
+```
 
+---
+
+## Plotting
+
+A more gov.uk friendly style
+
+```{r ggplot_govstyle_code, eval=FALSE, echo=TRUE}
+
+library(ggplot2)
+library(govstyle)
+
+re78_agg %>%
+  ggplot +
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  geom_bar(
+    stat = "identity",
+    fill = unname(gov_cols["turquoise"])
+  ) + 
+  xlab("Years of education") +
+  ylab("Real earnings in 1978 ($)") +
+  theme_gov() +
+  theme(
+    legend.position = "right",
+    legend.key = element_blank()
+  )
+
+```
+
+---
+
+## Plotting
+
+A more gov.uk friendly style
+
+```{r ggplot_govstyle_plot, eval=TRUE, echo=FALSE, fig.width=8, fig.height=5}
+
+library(ggplot2)
+library(govstyle)
+
+re78_agg %>%
+  ggplot +
+  aes(
+    x = educ,
+    y = re78
+  ) +
+  geom_bar(
+    stat = "identity",
+    fill = unname(gov_cols["turquoise"])
+  ) + 
+  xlab("Years of education") +
+  ylab("Real earnings in 1978 ($)") +
+  theme_gov() +
+  theme(
+    legend.position = "right",
+    legend.key = element_blank()
+  )
 ```
 
 --- .intermezzo
@@ -625,8 +679,12 @@ library(testthat)
 # Check that the output we get matches our expectation
 
 expect_identical(
+  # our function replaces zeros with NA - so our first argument we ask our
+  # function to do this
   best(c(0,1,2,3,4,5,0)),
-  c(c(NA,1,2,3,4,5,NA))
+  # In the second argument, we give what we expect - the same vector, but with
+  # zeros converted to NAs
+  c(NA,1,2,3,4,5,NA)
   )
 
 ```
